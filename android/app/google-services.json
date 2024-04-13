@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "261474372304",
+    "project_id": "balare",
+    "storage_bucket": "balare.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261474372304:android:2d7d67f14368d9f78aecd5",
+        "android_client_info": {
+          "package_name": "com.example.balare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxd0qnfLH7hdVkCyOFrfpwNkS71Z6jaSE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,53 @@
+[
+    {
+      "name": "United States",
+      "iso": "US",
+      "flag": "🇺🇸"
+    },
+    {
+      "name": "United Kingdom",
+      "iso": "GB",
+      "flag": "🇬🇧"
+    },
+    {
+      "name": "Canada",
+      "iso": "CA",
+      "flag": "🇨🇦"
+    },
+    {
+      "name": "Germany",
+      "iso": "DE",
+      "flag": "🇩🇪"
+    },
+    {
+      "name": "France",
+      "iso": "FR",
+      "flag": "🇫🇷"
+    },
+    {
+      "name": "Japan",
+      "iso": "JP",
+      "flag": "🇯🇵"
+    },
+    {
+      "name": "Australia",
+      "iso": "AU",
+      "flag": "🇦🇺"
+    },
+    {
+      "name": "Brazil",
+      "iso": "BR",
+      "flag": "🇧🇷"
+    },
+    {
+      "name": "India",
+      "iso": "IN",
+      "flag": "🇮🇳"
+    },
+    {
+      "name": "South Africa",
+      "iso": "ZA",
+      "flag": "🇿🇦"
+    }
+  ]
+  

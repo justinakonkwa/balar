@@ -1,0 +1,117 @@
+{
+  "get_started": "Get Started",
+  "menu": {
+    "menu_1": "Home",
+    "menu_2": "Expenses",
+    "menu_3": "Image",
+    "menu_4": "Settings"
+  },
+  "title": {
+    "title_1": "Today",
+    "title_2": "Yesterday",
+    "title_3": "Last week",
+    "title_4": "Last Month",
+    "title_5": "money spent"
+    
+  },
+  "search_field": {
+    "title": "search"
+  },
+  "button": {
+    "cancel": "Cancel",
+    "change_language": "Change Language"
+  },
+  "language": {
+    "name": {
+      "en": "English",
+      "fr": "French",
+      "es": "Spanish",
+      "fa": "Persian",
+      "ar": "Arabic",
+      "ru": "Russian"
+    },
+    "selected_message": "Currently selected language is {language}",
+    "selection": {
+      "message": "Please select a language from the list",
+      "title": "Language Selection"
+    }
+  },
+  "plural": {
+    "demo": {
+      "zero": "Please start pushing the 'plus' button.",
+      "one": "You have pushed the button one time.",
+      "two": "You have pushed the button two times.",
+      "other": "You have pushed the button {{value}} times."
+    }
+  },
+  "paywall": {
+    "title": "AI-Powered Money Assistant",
+    "subtitle": "Effortlessly track your expenses with our AI-driven system",
+    "restore": "Restore",
+    "restoreTitle": "Restore Subscription",
+    "terms": "Terms and Conditions",
+    "showOffers": "Show Offers",
+    "activeFreeTrial": "Active Free Trial",
+    "isNone": "No Subscription found",
+    "isMonthly": "Monthly Subscription",
+    "isAnnual": "Annual Subscription",
+    "isMonthlyFree": "Monthly Free trial",
+    "isAnnualFree": "Annual Free trial",
+    "expireOn": "Expire on ",
+    "tryForFree": "Try for free",
+    "isFreeType": "Free trial",
+    "isNotFree": "Subscription",
+    "restore_error": "Error while restoring subscription",
+    "restore_success": "Subscription restored successfully",
+    "noActiveSubscription": "No active subscription found"
+  },
+  "login": {
+    "welcomeMsg": "Welcome to Money AI",
+    "subTitle": "Get started and let AI manage your finances",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithApple": "Continue with Apple",
+    "continueWithEmail": "Continuer with Email",
+    "signupWithEmail": "Signup with Email",
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "ForgotPassword": "Forgot Password",
+    "notHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "sendEmail": "Send Email"
+  },
+
+  "theme": {
+    "ok": "OK",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "loading": "Loading..."
+  },
+
+  "settings": {
+    "title": "Settings",
+    "general": "General",
+    "personal_info": "Personal Info",
+    "manage_subscription": "Manage Subscription",
+    "language": "Language",
+    "theme": "Theme",
+    "logout": "Logout",
+    "logout_message": "Are you sure you want to logout?",
+    "logout_success": "Logout successfully",
+    "logout_error": "Error while logout",
+    "reminder": "Reminders",
+
+    "support_and_feedback": "Support & Feedback",
+    "contactUs": "Contact Us",
+    "leaveReview": "Leave a Review",
+    "shareApp": "Share the App",
+
+    "app": "App Info",
+    "privacy_policy": "Privacy Policy",
+    "terms_and_conditions": "Terms & Conditions",
+    "about": "About",
+
+    "Account": "Account"
+
+  }
+}

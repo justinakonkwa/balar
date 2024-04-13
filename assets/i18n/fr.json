@@ -1,0 +1,122 @@
+{
+  "get_started": "Commencer",
+  "menu": {
+    "menu_1": "Acceuil",
+    "menu_2": "Dépenses",
+    "menu_3": "image",
+    "menu_4": "Paramètres"
+  },
+  "title": {
+    "title_1": "Aujourd'hui",
+    "title_2": "Hier",
+    "title_3": "Semaine Passée",
+    "title_4": "Mois Passée",
+    "title_5": "Argent dépensé"
+  },
+    "homepage":{
+    "homepage_1": "Recettes du jour",
+    "homepage_2": "capital",
+    "homepage_3": "Produits en stock",
+    "homepage_4": "indicateurs  magasin" 
+  },
+  "search_field": {
+    "title": "recherche"
+  },
+  "button": {
+    "cancel": "Annuler",
+    "change_language": "Changer de langue"
+  },
+  "language": {
+    "name": {
+      "en": "Anglais",
+      "fr": "Français",
+      "es": "Espagnole",
+      "fa": "Persane",
+      "ar": "Arabe",
+      "ru": "Russe"
+    },
+    "selected_message": "La langue actuellement sélectionnée est {langue}",
+    "selection": {
+      "message": "Veuillez sélectionner une langue dans la liste",
+      "title": "Sélection de la langue"
+    }
+  },
+  "plural": {
+    "demo": {
+      "zero": "S'il vous plaît, commencez à appuyer sur le bouton 'plus'.",
+      "one": "Vous avez appuyé sur le bouton une fois.",
+      "two": "Vous avez appuyé deux fois sur le bouton.",
+      "other": "Vous avez appuyé sur le bouton {{value}} fois."
+    }
+  },
+  "paywall": {
+    "title": "AI-Powered Money Assistant",
+    "subtitle": "Suivez sans effort vos dépenses avec notre système basé sur l'IA",
+    "restore": "Restaurer",
+    "restoreTitle": "Restaurer l'abonnement",
+    "terms": "Termes et conditions",
+    "showOffers": "Afficher les Offers",
+    "activeFreeTrial": "Activer l'essai gratuit",
+    "isNone": "Aucun abonnement trouvé",
+    "isMonthly": "abonnement mensuel",
+    "isAnnual": "abonnement annuel",
+    "isMonthlyFree": "essai gratuit mensuel",
+    "isAnnualFree": "essai gratuit annuel",
+    "expireOn": "Expire le ",
+    "tryForFree": "Essayez gratuitement",
+    "isFreeType": "Essai Gratuit",
+    "isNotFree": "Abonnement",
+    "restore_error": "Impossible de restaurer l'abonnement",
+    "restore_success": "Abonnement restauré avec succès",
+    "noActiveSubscription": "Aucun abonnement actif trouvé"
+  },
+
+  "login": {
+    "welcomeMsg": "Welcome to Money AI",
+    "subTitle": "Commencez et laissez l'IA gérer vos finances",
+    "continueWithGoogle": "Continuer avec Google",
+    "continueWithApple": "Continuer avec Apple",
+    "continueWithEmail": "Continuer avec Email",
+    "signupWithEmail": "S'inscrire avec l'e-mail",
+    "signin": "S'inscrire",
+    "signup": "Se connecter",
+    "ForgotPassword": "Mot de passe oublié",
+    "notHaveAccount": "Vous n'avez pas de compte ?",
+    "alreadyHaveAccount": "Avez-vous déjà un compte ?",
+    "sendEmail": "Envoyer un e-mail"
+  },
+
+  "theme": {
+    "ok": "OK",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système",
+    "loading": "Chargement..."
+  },
+
+  "settings": {
+    "title": "Paramètres",
+    "general": "Général",
+    "personal_info": "Personal Info",
+    "manage_subscription": "Gérer l'abonnement",
+    "language": "Langue",
+    "theme": "Thème",
+    "logout": "Déconnexion",
+    "logout_message": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "logout_success": "Déconnecté avec succès",
+    "logout_failed": "Échec de la déconnexion",
+    "reminders": "Rappels",
+
+    "support_and_feedback": "",
+    "contactUs": "Contactez-nous",
+    "leaveReview": "Laisser un avis",
+    "shareApp": "Partager l'application",
+
+    "app": "Application",
+    "privacy_policy": "Politique de confidentialité",
+    "terms_and_conditions": "Termes et conditions",
+    "about": "À propos de",
+
+    "Account": "Compte"
+  }
+}
