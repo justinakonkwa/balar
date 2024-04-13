@@ -23,7 +23,7 @@ class _MainPageState extends State<MainPage> {
     HomePage(),
     ExpensesPage(),
     IncomePage(),
-    UserPage(),
+    SettingsPage(),
   ];
 
   @override
@@ -68,7 +68,7 @@ class _MainPageState extends State<MainPage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                CupertinoIcons.person,
+                CupertinoIcons.settings,
               ),
               label: ('Profil'),
             ),
