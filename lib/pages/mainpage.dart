@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:balare/pages/expenses_page.dart';
 import 'package:balare/pages/home_page.dart';
+import 'package:balare/pages/income_page.dart';
+import 'package:balare/pages/user_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +21,9 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    HomePage(),
-    HomePage(),
-    HomePage(),
+    ExpensesPage(),
+    IncomePage(),
+    UserPage(),
   ];
 
   @override
@@ -55,19 +58,19 @@ class _MainPageState extends State<MainPage> {
               icon: Icon(
                 CupertinoIcons.layers_alt,
               ),
-              label: ('Product'),
+              label: ('Expenses'),
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 CupertinoIcons.cart,
               ),
-              label: ('cart'),
+              label: ('Income'),
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 CupertinoIcons.person,
               ),
-              label: ('history'),
+              label: ('Profil'),
             ),
           ],
           onTap: (index) {
