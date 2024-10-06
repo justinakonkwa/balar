@@ -51,7 +51,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => AddItemPage())));
+              MaterialPageRoute(builder: ((context) => TransactionFormPage(type: '',))));
         },
         child: const Text('Add'),
       ),

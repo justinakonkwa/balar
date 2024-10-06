@@ -8,7 +8,7 @@ import 'package:balare/authantification/signup_page.dart';
 import 'package:balare/firebase_options.dart';
 import 'package:balare/intro/Intro.dart';
 import 'package:balare/pages/home_page.dart';
-import 'package:balare/pages/mainpage.dart';
+import 'package:balare/mainpage.dart';
 import 'package:balare/theme/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';

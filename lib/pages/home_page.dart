@@ -1,3 +1,4 @@
+import 'package:balare/screens/history_screen.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/bouton_next.dart';
@@ -62,46 +63,86 @@ class HomePage extends StatelessWidget {
                 SliverChildBuilderDelegate((BuildContext context, int index) {
               return Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    NextButton(
-                      onTap: () {},
-                      color: Theme.of(context).highlightColor,
-                      child: Row(
-                        children: [
-                          Icon(Icons.attach_money, color: Colors.white,),
-                          sizedbox2,
-                          sizedbox2,
-                          AppTextLarge(text: 'Revenus', color: Colors.white,)
-                        ],
+                child: Flexible(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      NextButton(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HistoriquePage(type: 'incomes'),
+                            ),
+                          );
+                        },
+                        color: Theme.of(context).highlightColor,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.attach_money,
+                              color: Colors.white,
+                            ),
+                            sizedbox2,
+                            AppTextLarge(
+                              size: 18,
+                              text: 'Revenus',
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    NextButton(
-                      onTap: () {},
-                      color: Theme.of(context).highlightColor,
-                      child: Row(
-                        children: [
-                          Icon(Icons.money_off, color: Colors.white,),
-                          sizedbox2,
-                          sizedbox2,
-                          AppTextLarge(text: 'Depenses', color: Colors.white,)
-                        ],
+                      NextButton(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HistoriquePage(type: 'expenses'),
+                            ),
+                          );
+                        },
+                        color: Theme.of(context).highlightColor,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.attach_money,
+                              color: Colors.white,
+                            ),
+                            sizedbox2,
+                            AppTextLarge( size: 18,
+                              text: 'Depenses',
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    NextButton(
-                      onTap: () {},
-                      color: Theme.of(context).highlightColor,
-                      child: Row(
-                        children: [
-                          Icon(Icons.account_balance, color: Colors.white,),
-                          sizedbox2,
-                          sizedbox2,
-                          AppTextLarge(text: 'Dettes', color: Colors.white,)
-                        ],
+                      NextButton(
+                        
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HistoriquePage(type: 'debts'),
+                            ),
+                          );
+                        },
+                        color: Theme.of(context).highlightColor,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.account_balance,
+                              color: Colors.white,
+                            ),
+                            sizedbox2,
+                            AppTextLarge( size: 18,
+                              text: 'Dettes',
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }, childCount: 1),
@@ -112,7 +153,7 @@ class HomePage extends StatelessWidget {
                 return Container(
                   margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
                   padding:
-                      EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 10),
+                      EdgeInsets.only(left: 20, right: 20, bottom: 5.0, top: 5.0),
                   decoration: BoxDecoration(
                       color: Theme.of(context).highlightColor,
                       borderRadius: BorderRadius.circular(20)),
@@ -127,32 +168,32 @@ class HomePage extends StatelessWidget {
                           AppTextLarge(
                             text: 'Revenus',
                             color: Colors.white,
-                            size: 18,
+                            size: 16,
                           ),
                           AppTextLarge(
                             text: '\$ 180.00',
                             color: Colors.green,
-                            size: 20.0,
+                            size: 18.0,
                           ),
                           AppTextLarge(
-                            size: 18,
+                            size: 16,
                             text: 'Depenses',
                             color: Colors.white,
                           ),
                           AppTextLarge(
                             text: '\$ 280.00',
                             color: Colors.red,
-                            size: 20.0,
+                            size: 18.0,
                           ),
                           AppTextLarge(
-                            size: 18,
+                            size: 16,
                             text: 'Dettes',
                             color: Colors.white,
                           ),
                           AppTextLarge(
                             text: '\$ 380.00',
                             color: Colors.lightBlueAccent,
-                            size: 20,
+                            size: 18.0,
                           ),
                         ],
                       ),

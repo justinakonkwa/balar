@@ -1,9 +1,7 @@
 import 'package:balare/intro/Intro.dart';
-import 'package:balare/pages/home_page.dart';
-import 'package:balare/pages/mainpage.dart';
+import 'package:balare/mainpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 
 class AuthVerification extends StatefulWidget {
   const AuthVerification({super.key});

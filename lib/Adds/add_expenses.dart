@@ -1,99 +1,156 @@
-import 'package:flutter/material.dart';
 import 'package:balare/Modeles/firebase.dart';
+import 'package:balare/widget/app_text_large.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class AddItemPage extends StatefulWidget {
+import '../widget/bouton_next.dart';
+
+class TransactionFormPage extends StatefulWidget {
+  final String type; // Le type de transaction (revenus, dépenses, dettes)
+  const TransactionFormPage({required this.type, super.key});
+
   @override
-  _AddItemPageState createState() => _AddItemPageState();
+  _TransactionFormPageState createState() => _TransactionFormPageState();
 }
 
-class _AddItemPageState extends State<AddItemPage> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _categoryController = TextEditingController();
-  final _priceController = TextEditingController();
+class _TransactionFormPageState extends State<TransactionFormPage> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  String? _selectedCurrency; // Gérer les devises
+  DateTime? _selectedDate; // Gérer la date
+
+  // Méthode pour ajouter une transaction
+  Future<void> addTransaction(BuildContext context) async {
+    String userId = (await FirebaseAuth.instance.currentUser)?.uid ?? '';
+
+    if (widget.type == null) {
+      // Aucune transaction sélectionnée
+      return;
+    }
+
+    if (widget.type == 'incomes') {
+      await AllFunctions.addIncome(
+        userId,
+        _nameController.text,
+        _categoryController.text,
+        double.tryParse(_priceController.text) ?? 0,
+        _descriptionController.text,
+        _selectedCurrency,
+        _selectedDate,
+        context,
+      );
+    } else if (widget.type == 'expenses') {
+      await AllFunctions.addExpense(
+        userId,
+        _nameController.text,
+        _categoryController.text,
+        double.tryParse(_priceController.text) ?? 0,
+        _descriptionController.text,
+        _selectedCurrency,
+        _selectedDate,
+        context,
+      );
+    } else if (widget.type == 'debts') {
+      await AllFunctions.addDebt(
+        userId,
+        _nameController.text,
+        _categoryController.text,
+        double.tryParse(_priceController.text) ?? 0,
+        _descriptionController.text,
+        _selectedCurrency,
+        _selectedDate,
+        context,
+      );
+    }
+  }
+
+  // Sélection de la date
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null && pickedDate != _selectedDate) {
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Item'),
+        title: Text('Ajouter une Transaction'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextFormField(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            if (widget.type != null) ...[
+              TextField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter the name';
-                  }
-                  return null;
-                },
+                decoration: InputDecoration(labelText: 'Nom'),
               ),
-              TextFormField(
+              TextField(
                 controller: _categoryController,
-                decoration: InputDecoration(labelText: 'Category'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter the category';
-                  }
-                  return null;
-                },
+                decoration: InputDecoration(labelText: 'Catégorie'),
               ),
-              TextFormField(
+              TextField(
                 controller: _priceController,
-                decoration: InputDecoration(labelText: 'Price'),
+                decoration: InputDecoration(labelText: 'Prix'),
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter the price';
-                  }
-                  return null;
-                },
               ),
-              SizedBox(height: 20),
-              MaterialButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    try {
-                      String? userId = await AllFunctions()
-                          .getUserId(); // Récupérer l'ID de l'utilisateur
-                      if (userId != null) {
-                        await AllFunctions.addExpense(
-                          userId,
-                          _nameController.text,
-                          _categoryController.text,
-                          double.parse(
-                              _priceController.text), // Convertir en double
-                          context,
-                        );
-                      } else {
-                        // L'utilisateur n'est pas connecté
-                        print('User not logged in.');
-                      }
-                    } catch (e) {
-                      // Une erreur s'est produite lors de l'ajout de la dépense
-                      print('Error adding expense: $e');
-                    }
-                  }
+              TextField(
+                controller: _descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => _selectDate(context),
+                child: Text(
+                  _selectedDate == null
+                      ? 'Sélectionner la Date'
+                      : 'Date: ${_selectedDate!.toLocal()}'.split(' ')[0],
+                ),
+              ),
+              DropdownButton<String>(
+                value: _selectedCurrency,
+                hint: Text('Sélectionner la devise'),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedCurrency = newValue;
+                  });
                 },
-                child: Text('Save'),
+                items: <String>['USD', 'EUR', 'XAF']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  addTransaction(context); // Appeler la méthode pour ajouter une transaction
+                },
+                child: Text('Ajouter ${widget.type.capitalizeFirst}'),
               ),
             ],
-          ),
+          ],
         ),
       ),
     );
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: AddItemPage(),
-  ));
+extension StringExtension on String {
+  String get capitalizeFirst => '${this[0].toUpperCase()}${substring(1)}';
 }
