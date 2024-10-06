@@ -15,7 +15,6 @@ class AllFunctions {
 
   static Future<void> addExpense(
       String userId,
-      String name,
       String category,
       double price,
       String description,
@@ -24,7 +23,6 @@ class AllFunctions {
       BuildContext context) async {
     await _addTransaction(
       userId,
-      name,
       category,
       price,
       description,
@@ -37,7 +35,6 @@ class AllFunctions {
 
   static Future<void> addIncome(
       String userId,
-      String name,
       String category,
       double price,
       String description,
@@ -46,7 +43,6 @@ class AllFunctions {
       BuildContext context) async {
     await _addTransaction(
       userId,
-      name,
       category,
       price,
       description,
@@ -59,7 +55,6 @@ class AllFunctions {
 
   static Future<void> addDebt(
       String userId,
-      String name,
       String category,
       double price,
       String description,
@@ -68,7 +63,6 @@ class AllFunctions {
       BuildContext context) async {
     await _addTransaction(
       userId,
-      name,
       category,
       price,
       description,
@@ -82,7 +76,6 @@ class AllFunctions {
   // Méthode générique pour ajouter une transaction
   static Future<void> _addTransaction(
       String userId,
-      String name,
       String category,
       double price,
       String description,
@@ -96,7 +89,6 @@ class AllFunctions {
           .doc(userId)
           .collection(collection) // Utiliser la collection passée en paramètre
           .add({
-        'name': name,
         'category': category,
         'price': price,
         'description': description,
@@ -130,7 +122,8 @@ class AllFunctions {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Erreur'),
-            content: Text('Échec de l\'ajout de la transaction. Veuillez réessayer plus tard.'),
+            content: Text(
+                'Échec de l\'ajout de la transaction. Veuillez réessayer plus tard.'),
             actions: <Widget>[
               MaterialButton(
                 child: Text('OK'),
@@ -218,5 +211,4 @@ class AllFunctions {
       return transactionList;
     });
   }
-
 }
