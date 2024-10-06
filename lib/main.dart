@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api
 
 import 'package:balare/authantification/authent_page.dart';
+import 'package:balare/authantification/login_page.dart';
+import 'package:balare/authantification/main_page.dart';
+import 'package:balare/authantification/service_otp.dart';
+import 'package:balare/authantification/signup_page.dart';
 import 'package:balare/firebase_options.dart';
 import 'package:balare/intro/Intro.dart';
 import 'package:balare/pages/home_page.dart';
@@ -70,12 +74,14 @@ class _MyAppState extends State<MyApp> {
             locale: localizationDelegate.currentLocale,
             theme: provider.themeData,
             debugShowCheckedModeBanner: false,
-            initialRoute: '/main',
+            initialRoute: '/verification',
             routes: {
               '/intro': (context) => Intro(),
               '/home': (context) => HomePage(),
-              '/auth':(context)=> AuthantPage(),
+              '/auth':(context)=> SignupPage(),
               '/main': (context)=> MainPage(),
+              '/verification': (context)=> AuthVerification(),
+
             },
           );
         },

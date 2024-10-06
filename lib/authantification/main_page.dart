@@ -1,5 +1,6 @@
 import 'package:balare/intro/Intro.dart';
 import 'package:balare/pages/home_page.dart';
+import 'package:balare/pages/mainpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class _AuthVerificationState extends State<AuthVerification> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
-            return const HomePage();
+            return const MainPage();
           } else {
             return const Intro();
           }

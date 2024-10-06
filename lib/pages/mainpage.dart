@@ -21,7 +21,6 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    ExpensesPage(),
     IncomePage(),
     SettingsPage(),
   ];
@@ -31,21 +30,20 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       body: _widgetOptions.elementAt(currentIndex),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-              width: 1,
-            ),
-          ),
-        ),
+        // decoration: BoxDecoration(
+        //   border: Border(
+        //     top: BorderSide(
+        //       color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+        //       width: 1,
+        //     ),
+        //   ),
+        // ),
         child: BottomNavigationBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Colors.black38,
           selectedItemColor: Theme.of(context).colorScheme.onBackground,
           elevation: 0,
           showSelectedLabels: true,
-          showUnselectedLabels: false,
-          unselectedIconTheme: IconThemeData(color: Colors.grey),
+          showUnselectedLabels: true,
           currentIndex: currentIndex,
           items: const [
             BottomNavigationBarItem(
@@ -53,12 +51,6 @@ class _MainPageState extends State<MainPage> {
                 CupertinoIcons.house_alt,
               ),
               label: ('Home'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.layers_alt,
-              ),
-              label: ('Expenses'),
             ),
             BottomNavigationBarItem(
               icon: Icon(
