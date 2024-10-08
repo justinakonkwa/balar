@@ -49,9 +49,19 @@ dependencies:
   flutter_keyboard_visibility: ^6.0.0
   country_code_picker: ^3.0.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo_android_phone.png"
+  adaptive_icon_background: "#FFC107"
+  adaptive_icon_foreground: "assets/logo_android_phone.png"
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

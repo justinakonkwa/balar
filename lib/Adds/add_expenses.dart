@@ -85,7 +85,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ajouter une Transaction'),
+        title: AppText(text:'Ajouter une Transaction'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -166,7 +166,11 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                               color: Theme.of(context).highlightColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            suffix: Padding(
+                            suffix:
+
+
+
+                            Padding(
                               padding:  EdgeInsets.only(right: 20.0),
                               child: Icon(Icons.money),
                             ),

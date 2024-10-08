@@ -9,7 +9,7 @@ class NextButton extends StatelessWidget {
     required this.onTap,
     required this.child,
     this.color,
-    double? width,
+    double? this.width,
   });
 
   final void Function()? onTap;

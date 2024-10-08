@@ -1,241 +1,365 @@
+import 'package:balare/Modeles/firebase.dart';
+import 'package:balare/Modeles/firebase/transaction_service.dart';
 import 'package:balare/screens/history_screen.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/bouton_next.dart';
 import 'package:balare/widget/constantes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Stream<List<Map<String, dynamic>>> transactionsByType(
+      String userId, String type, DateTime start, DateTime end) {
+    return TransactionsService.listenToTransactionsFiltered(
+        userId, type, start, end);
+  }
+
+  DateTime getStartDate(String day) {
+    switch (day) {
+      case "Aujourd'hui":
+        return TransactionsService.getTodayStart();
+      case "Hier":
+        return TransactionsService.getYesterdayStart();
+      case "Ce mois-ci":
+        return TransactionsService.getThisMonthStart();
+      case "Mois passé":
+        return TransactionsService.getLastMonthStart();
+      default:
+        return DateTime.now(); // Valeur par défaut
+    }
+  }
+
+  DateTime getEndDate(String day) {
+    switch (day) {
+      case "Aujourd'hui":
+        return TransactionsService.getTodayEnd();
+      case "Hier":
+        return TransactionsService.getYesterdayEnd();
+      case "Ce mois-ci":
+        return TransactionsService.getThisMonthEnd();
+      case "Mois passé":
+        return TransactionsService.getLastMonthEnd();
+      default:
+        return DateTime.now(); // Valeur par défaut
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FutureBuilder<String?>(
+      future: AllFunctions().getUserId(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError || !snapshot.hasData) {
+          return Center(
+              child: Text(
+                  'Erreur lors de la récupération de l\'ID de l\'utilisateur'));
+        }
+
+        final userId = snapshot.data!;
+        print(
+            "Utilisateur connecté : $userId"); // Afficher l'ID de l'utilisateur
+
+        return Scaffold(
+          backgroundColor: Colors.black,
+          body: CustomScrollView(
+            slivers: [
+              _buildSliverAppBar(),
+              _buildButtonsRow(context),
+              _buildTransactionSummaryCard(context, userId),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  SliverAppBar _buildSliverAppBar() {
+    return SliverAppBar(
       backgroundColor: Colors.black,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Colors.black,
-            expandedHeight: 180.0,
-            floating: false,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Align(
-                alignment: Alignment.bottomLeft,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppTextLarge(
-                      text: "Balar",
-                      size: 30.0,
-                      color: Colors.white,
-                    ),
-                    const Icon(
-                      Icons.circle_notifications_outlined,
-                      color: Colors.white,
-                    )
-                  ],
+      expandedHeight: 180.0,
+      floating: false,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+        title: Align(
+          alignment: Alignment.bottomLeft,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AppTextLarge(
+                text: "Balar",
+                size: 30.0,
+                color: Colors.white,
+              ),
+              const Icon(
+                Icons.circle_notifications_outlined,
+                color: Colors.white,
+              )
+            ],
+          ),
+        ),
+        titlePadding: const EdgeInsets.only(left: 15, bottom: 10, right: 15),
+        background: Stack(
+          children: [
+            Container(color: Colors.black),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, top: 50),
+              child: Opacity(
+                opacity: 1.0,
+                child: Image.asset(
+                  'assets/logo22.png',
+                  height: 100,
                 ),
               ),
-              titlePadding:
-                  const EdgeInsets.only(left: 15, bottom: 10, right: 15),
-              background: Stack(
-                children: [
-                  Container(
-                    color: Colors.black,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 0.0, top: 50),
-                    child: Opacity(
-                      opacity: 1.0,
-                      child: Image.asset(
-                        'assets/logo22.png', // Remplacez par votre chemin d'image
-                        height: 100, // Ajustez la hauteur du logo
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
-          ),
-          SliverList(
-            delegate:
-                SliverChildBuilderDelegate((BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Flexible(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      NextButton(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HistoriquePage(type: 'incomes'),
-                            ),
-                          );
-                        },
-                        color: Theme.of(context).highlightColor,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.attach_money,
-                              color: Colors.white,
-                            ),
-                            sizedbox2,
-                            AppTextLarge(
-                              size: 18,
-                              text: 'Revenus',
-                              color: Colors.white,
-                            )
-                          ],
-                        ),
-                      ),
-                      NextButton(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HistoriquePage(type: 'expenses'),
-                            ),
-                          );
-                        },
-                        color: Theme.of(context).highlightColor,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.attach_money,
-                              color: Colors.white,
-                            ),
-                            sizedbox2,
-                            AppTextLarge( size: 18,
-                              text: 'Depenses',
-                              color: Colors.white,
-                            )
-                          ],
-                        ),
-                      ),
-                      NextButton(
-                        
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HistoriquePage(type: 'debts'),
-                            ),
-                          );
-                        },
-                        color: Theme.of(context).highlightColor,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.account_balance,
-                              color: Colors.white,
-                            ),
-                            sizedbox2,
-                            AppTextLarge( size: 18,
-                              text: 'Dettes',
-                              color: Colors.white,
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SliverList _buildButtonsRow(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildNextButton(
+                  context,
+                  'Revenus',
+                  Icons.money_sharp,
+                  'incomes',
                 ),
-              );
-            }, childCount: 1),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Container(
-                  margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                  padding:
-                      EdgeInsets.only(left: 20, right: 20, bottom: 5.0, top: 5.0),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).highlightColor,
-                      borderRadius: BorderRadius.circular(20)),
-                  height: 160.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          AppTextLarge(
-                            text: 'Revenus',
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                          AppTextLarge(
-                            text: '\$ 180.00',
-                            color: Colors.green,
-                            size: 18.0,
-                          ),
-                          AppTextLarge(
-                            size: 16,
-                            text: 'Depenses',
-                            color: Colors.white,
-                          ),
-                          AppTextLarge(
-                            text: '\$ 280.00',
-                            color: Colors.red,
-                            size: 18.0,
-                          ),
-                          AppTextLarge(
-                            size: 16,
-                            text: 'Dettes',
-                            color: Colors.white,
-                          ),
-                          AppTextLarge(
-                            text: '\$ 380.00',
-                            color: Colors.lightBlueAccent,
-                            size: 18.0,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          AppTextLarge(
-                            text: "Aujourd'hui",
-                            color: Colors.white,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                width: 30,
-                                height: 40,
-                                color: Colors.lightGreenAccent,
-                              ),
-                              sizedbox2,
-                              Container(
-                                width: 30,
-                                height: 40,
-                                color: Colors.redAccent,
-                              ),
-                              sizedbox2,
-                              Container(
-                                width: 30,
-                                height: 40,
-                                color: Colors.lightBlueAccent,
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-              childCount: 4, // Nombre d'éléments dans la liste
+                _buildNextButton(
+                  context,
+                  'Dépenses',
+                  Icons.attach_money,
+                  'expenses',
+                ),
+                _buildNextButton(
+                  context,
+                  'Dettes',
+                  Icons.account_balance,
+                  'debts',
+                ),
+              ],
             ),
+          );
+        },
+        childCount: 1,
+      ),
+    );
+  }
+
+  NextButton _buildNextButton(
+      BuildContext context, String label, IconData icon, String type) {
+    return NextButton(
+      width: MediaQuery.of(context).size.width * 0.31,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HistoriquePage(type: type),
           ),
+        );
+      },
+      color: Theme.of(context).highlightColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(icon, color: Colors.white),
+          AppText(text: label, color: Colors.white),
         ],
       ),
+    );
+  }
+
+  SliverList _buildTransactionSummaryCard(BuildContext context, String userId) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          List<String> days = [
+            "Aujourd'hui",
+            "Hier",
+            "Ce mois-ci",
+            "Mois passé"
+          ];
+          return _buildTransactionSummaryContainer(
+              context, days[index], userId);
+        },
+        childCount: 4,
+      ),
+    );
+  }
+
+  Widget _buildTransactionSummaryContainer(
+      BuildContext context, String day, String userId) {
+    // Récupérer les dates de début et de fin
+    DateTime start = getStartDate(day);
+    DateTime end = getEndDate(day);
+
+    // Flux pour chaque type de transaction
+    Stream<List<Map<String, dynamic>>> revenueStream =
+        transactionsByType(userId, 'incomes', start, end);
+    Stream<List<Map<String, dynamic>>> expenseStream =
+        transactionsByType(userId, 'expenses', start, end);
+    Stream<List<Map<String, dynamic>>> debtStream =
+        transactionsByType(userId, 'debts', start, end);
+
+    return StreamBuilder<List<List<Map<String, dynamic>>>>(
+      stream: _zipStreams(revenueStream, expenseStream, debtStream),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Erreur: ${snapshot.error}'));
+        }
+
+        // Calculer les totaux
+        double totalRevenue = 0.0;
+        double totalExpenses = 0.0;
+        double totalDebts = 0.0;
+
+        if (snapshot.hasData) {
+          final revenues = snapshot.data![0];
+          final expenses = snapshot.data![1];
+          final debts = snapshot.data![2];
+
+          totalRevenue = revenues.fold(
+              0.0, (sum, item) => sum + (item['price']?.toDouble() ?? 0.0));
+          totalExpenses = expenses.fold(
+              0.0, (sum, item) => sum + (item['price']?.toDouble() ?? 0.0));
+          totalDebts = debts.fold(
+              0.0, (sum, item) => sum + (item['price']?.toDouble() ?? 0.0));
+        }
+
+        return Container(
+          alignment: Alignment.center,
+          margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          padding: const EdgeInsets.only(
+            left: 20,
+            right: 20,
+            bottom: 5.0,
+            top: 5.0,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).highlightColor),
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          height: 150.0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildTransactionDetail(
+                  'Revenus',
+                  '\$${totalRevenue.toStringAsFixed(2)}',
+                  Colors.green,
+                  context),
+              sizedbox,
+              _buildTransactionDetail('Dépenses',
+                  '\$${totalExpenses.toStringAsFixed(2)}', Colors.red, context),
+              sizedbox,
+              _buildTransactionDetail(
+                  'Dettes',
+                  '\$${totalDebts.toStringAsFixed(2)}',
+                  Colors.lightBlueAccent,
+                  context),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+
+                  AppTextLarge(text: day, color: Colors.white,size: 16.0,),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Stream<List<List<Map<String, dynamic>>>> _zipStreams(
+      Stream<List<Map<String, dynamic>>> stream1,
+      Stream<List<Map<String, dynamic>>> stream2,
+      Stream<List<Map<String, dynamic>>> stream3) {
+    return Stream<List<List<Map<String, dynamic>>>>.multi((controller) {
+      List<Map<String, dynamic>>? latestRevenues;
+      List<Map<String, dynamic>>? latestExpenses;
+      List<Map<String, dynamic>>? latestDebts;
+
+      late StreamSubscription<List<Map<String, dynamic>>> sub1;
+      late StreamSubscription<List<Map<String, dynamic>>> sub2;
+      late StreamSubscription<List<Map<String, dynamic>>> sub3;
+
+      sub1 = stream1.listen((data) {
+        latestRevenues = data;
+        if (latestExpenses != null && latestDebts != null) {
+          controller.add([latestRevenues!, latestExpenses!, latestDebts!]);
+        }
+      });
+
+      sub2 = stream2.listen((data) {
+        latestExpenses = data;
+        if (latestRevenues != null && latestDebts != null) {
+          controller.add([latestRevenues!, latestExpenses!, latestDebts!]);
+        }
+      });
+
+      sub3 = stream3.listen((data) {
+        latestDebts = data;
+        if (latestRevenues != null && latestExpenses != null) {
+          controller.add([latestRevenues!, latestExpenses!, latestDebts!]);
+        }
+      });
+
+      controller.onCancel = () {
+        sub1.cancel();
+        sub2.cancel();
+        sub3.cancel();
+      };
+    });
+  }
+
+  Widget _buildTransactionDetail(
+      String title, String amount, Color color, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Icon(CupertinoIcons.money_dollar,),
+            ),
+            sizedbox2,
+            AppText(text: title, color: Colors.white),
+          ],
+        ),
+        AppText(text: amount, color: color),
+      ],
+
     );
   }
 }
