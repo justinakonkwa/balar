@@ -4,7 +4,7 @@ import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/constantes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Pour le formatage des dates
 
@@ -25,7 +25,7 @@ class HistoriquePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: Icon(
-              Icons.ios_share_outlined,
+              CupertinoIcons.square_arrow_up,
             ),
           )
         ],
@@ -67,30 +67,70 @@ class HistoriquePage extends StatelessWidget {
                 }
 
                 final transactions = snapshot.data ?? [];
+                if (transactions.isEmpty) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(CupertinoIcons.flame,size: 40,),
+                            sizedbox,
+                            AppTextLarge(
+                              text:
+                                  "Aucune donnée disponible", // Texte par défaut
+                              size: 16,
+                            ),
+                            sizedbox,
+                            AppText(
+                              text:
+                                  "Lorsque vous ajoutez une nouvelle donnée, Elle apparaîtra ici.", // Texte par défaut
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
                 return SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.only(
                         left: 8.0, right: 8.0, top: 20, bottom: 20.0),
-                    child: Center(
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(),
+                          color: Theme.of(context).highlightColor),
                       child: Table(
                         border: TableBorder.all(
                           style: BorderStyle.none,
                         ),
                         columnWidths: const {
-                          0: FlexColumnWidth(1),
-                          1: FlexColumnWidth(1.5),
+                          0: FlexColumnWidth(0.9),
+                          1: FlexColumnWidth(2),
                           2: FlexColumnWidth(3),
                           3: FlexColumnWidth(2),
-                          4: FlexColumnWidth(2),
+                          4: FlexColumnWidth(1.9),
                         },
                         children: [
                           // Ligne d'en-tête du tableau
                           TableRow(
                             children: [
                               Container(
-                                height: 30,
+                                height: 50,
                                 alignment: Alignment.center,
-                                color: Colors.green,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                  ),
+                                ),
                                 child: TableCell(
                                   child: Text('N°'),
                                 ),
@@ -98,10 +138,10 @@ class HistoriquePage extends StatelessWidget {
                               TableCell(
                                 child: Container(
                                   alignment: Alignment.center,
-                                  height: 30,
-                                  color: Colors.green,
+                                  height: 50,
+                                  color: Theme.of(context).colorScheme.primary,
                                   child: AppTextLarge(
-                                    text: 'Catégories',
+                                    text: 'Catégorie',
                                     size: 14,
                                   ),
                                 ),
@@ -109,8 +149,8 @@ class HistoriquePage extends StatelessWidget {
                               TableCell(
                                 child: Container(
                                   alignment: Alignment.center,
-                                  height: 30,
-                                  color: Colors.green,
+                                  height: 50,
+                                  color: Theme.of(context).colorScheme.primary,
                                   child: AppTextLarge(
                                     text: 'Description',
                                     size: 14,
@@ -120,8 +160,8 @@ class HistoriquePage extends StatelessWidget {
                               TableCell(
                                 child: Container(
                                   alignment: Alignment.center,
-                                  height: 30,
-                                  color: Colors.green,
+                                  height: 50,
+                                  color: Theme.of(context).colorScheme.primary,
                                   child: AppTextLarge(
                                     text: 'Montant',
                                     size: 14,
@@ -131,16 +171,24 @@ class HistoriquePage extends StatelessWidget {
                               TableCell(
                                 child: Container(
                                   alignment: Alignment.center,
-                                  height: 30,
-                                  color: Colors.green,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(10),
+                                      bottomRight: Radius.circular(10),
+                                    ),
+                                  ),
                                   child: AppTextLarge(
-                                    text: 'Date d\'ajout',
+                                    text: 'Date',
                                     size: 14,
                                   ),
                                 ),
                               ),
                             ],
                           ),
+
                           // Lignes de transactions avec numérotation
                           ...transactions.asMap().entries.map((entry) {
                             int index = entry.key; // L'index de la transaction
@@ -225,6 +273,7 @@ class HistoriquePage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.inverseSurface,
         shape: CircleBorder(),
         onPressed: () {
           Navigator.push(

@@ -9,6 +9,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:provider/provider.dart';
+
+import '../theme/theme_provider.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -116,15 +120,23 @@ class _HomePageState extends State<HomePage> {
             Container(
               color: Theme.of(context).colorScheme.background,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 0.0, top: 50),
-              child: Opacity(
-                opacity: 1.0,
-                child: Image.asset(
-                  'assets/logo21.png',
-                  height: 100,
-                ),
-              ),
+            Consumer<ThemeProvider>(
+              builder: (context, provider, child) {
+                bool isLightTheme = provider.currentTheme;
+
+                return Padding(
+                  padding: const EdgeInsets.only(left: 0.0, top: 50),
+                  child: Opacity(
+                    opacity: 1.0,
+                    child: Image.asset(
+                      isLightTheme
+                          ? 'assets/logo22.png'
+                          : 'assets/logo21.png', // Change logo based on theme
+                      height: 100,
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
