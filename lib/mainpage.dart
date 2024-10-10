@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                CupertinoIcons.settings,
+                CupertinoIcons.person,
               ),
               label: ('Profil'),
             ),

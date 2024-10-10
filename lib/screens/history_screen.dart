@@ -1,16 +1,14 @@
-import 'package:balare/Adds/add_expenses.dart'; // Page pour ajouter une transaction
-import 'package:balare/Modeles/firebase.dart'; // Fonctionnalités Firestore
+import 'package:balare/Adds/add_expenses.dart';
+import 'package:balare/Modeles/firebase.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
-import 'package:balare/widget/constantes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Pour le formatage des dates
+import 'package:intl/intl.dart';
 
 class HistoriquePage extends StatelessWidget {
-  final String
-      type; // Le type de transactions à afficher (revenus, dépenses, dettes)
+  final String type;
 
   const HistoriquePage({required this.type, super.key});
 
@@ -31,7 +29,7 @@ class HistoriquePage extends StatelessWidget {
         ],
       ),
       body: FutureBuilder<String?>(
-        future: AllFunctions().getUserId(), // Récupérer l'ID de l'utilisateur
+        future: AllFunctions().getUserId(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -43,227 +41,280 @@ class HistoriquePage extends StatelessWidget {
             );
           } else if (!snapshot.hasData) {
             return const Center(
-              child: Text(
-                'Aucun utilisateur connecté.',
-              ),
+              child: Text('Aucun utilisateur connecté.'),
             );
           } else {
             String userId = snapshot.data!;
             return StreamBuilder<List<Map<String, dynamic>>>(
-              stream: AllFunctions.listenToTransactions(
-                  userId, type), // Filtrer les transactions par type
+              stream: AllFunctions.listenToTransactions(userId, type),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (snapshot.hasError) {
                   return Center(
                     child: AppText(
-                      text: 'Erreur lors de la récupération des transactions',
-                    ),
+                        text:
+                            'Erreur lors de la récupération des transactions'),
                   );
                 }
 
                 final transactions = snapshot.data ?? [];
+
+                // Si aucune transaction n'est disponible
                 if (transactions.isEmpty) {
                   return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(CupertinoIcons.flame,size: 40,),
-                            sizedbox,
-                            AppTextLarge(
-                              text:
-                                  "Aucune donnée disponible", // Texte par défaut
-                              size: 16,
-                            ),
-                            sizedbox,
-                            AppText(
-                              text:
-                                  "Lorsque vous ajoutez une nouvelle donnée, Elle apparaîtra ici.", // Texte par défaut
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.info, size: 40),
+                        SizedBox(height: 10),
+                        AppTextLarge(
+                          text: "Aucune donnée disponible",
+                          size: 16,
                         ),
-                      ),
+                        SizedBox(height: 10),
+                        AppText(
+                          text:
+                              "Lorsque vous ajoutez une nouvelle donnée, elle apparaîtra ici.",
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   );
                 }
 
+                // Regrouper les transactions par date
+                final groupedTransactions =
+                    <DateTime, List<Map<String, dynamic>>>{};
+
+                for (var transaction in transactions) {
+                  DateTime transactionDate;
+
+                  if (transaction['date'] is Timestamp) {
+                    transactionDate =
+                        (transaction['date'] as Timestamp).toDate();
+                  } else if (transaction['date'] is String) {
+                    transactionDate = DateTime.tryParse(transaction['date'])!;
+                  } else {
+                    continue;
+                  }
+
+                  DateTime dateOnly = DateTime(
+                    transactionDate.year,
+                    transactionDate.month,
+                    transactionDate.day,
+                  ); // Ignorer les heures/minutes/secondes
+
+                  if (!groupedTransactions.containsKey(dateOnly)) {
+                    groupedTransactions[dateOnly] = [];
+                  }
+                  groupedTransactions[dateOnly]!.add(transaction);
+                }
+
+                // Affichage du tableau complet
                 return SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8.0, right: 8.0, top: 20, bottom: 20.0),
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(),
-                          color: Theme.of(context).highlightColor),
-                      child: Table(
-                        border: TableBorder.all(
-                          style: BorderStyle.none,
-                        ),
-                        columnWidths: const {
-                          0: FlexColumnWidth(0.9),
-                          1: FlexColumnWidth(2),
-                          2: FlexColumnWidth(3),
-                          3: FlexColumnWidth(2),
-                          4: FlexColumnWidth(1.9),
-                        },
-                        children: [
-                          // Ligne d'en-tête du tableau
-                          TableRow(
-                            children: [
-                              Container(
-                                height: 50,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10),
-                                  ),
-                                ),
-                                child: TableCell(
-                                  child: Text('N°'),
-                                ),
-                              ),
-                              TableCell(
-                                child: Container(
-                                  alignment: Alignment.center,
+                  child: Container(
+                    padding: EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(),
+                      color: Theme.of(context).highlightColor,
+                    ),
+                    child: Column(
+                      children: [
+                        // Affichage des titres du tableau (une seule fois)
+                        Table(
+                          border: TableBorder.all(style: BorderStyle.none),
+                          columnWidths: const {
+                            0: FlexColumnWidth(0.9),
+                            1: FlexColumnWidth(2),
+                            2: FlexColumnWidth(3),
+                            3: FlexColumnWidth(2),
+                            4: FlexColumnWidth(1.9),
+                          },
+                          children: [
+                            TableRow(
+                              children: [
+                                Container(
                                   height: 50,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  child: AppTextLarge(
-                                    text: 'Catégorie',
-                                    size: 14,
-                                  ),
-                                ),
-                              ),
-                              TableCell(
-                                child: Container(
                                   alignment: Alignment.center,
-                                  height: 50,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  child: AppTextLarge(
-                                    text: 'Description',
-                                    size: 14,
-                                  ),
-                                ),
-                              ),
-                              TableCell(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  child: AppTextLarge(
-                                    text: 'Montant',
-                                    size: 14,
-                                  ),
-                                ),
-                              ),
-                              TableCell(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: 50,
                                   decoration: BoxDecoration(
                                     color:
                                         Theme.of(context).colorScheme.primary,
                                     borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10),
                                     ),
                                   ),
-                                  child: AppTextLarge(
-                                    text: 'Date',
-                                    size: 14,
+                                  child: Text('N°'),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 50,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    child: AppTextLarge(
+                                      text: 'Catégorie',
+                                      size: 14,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 50,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    child: AppTextLarge(
+                                      text: 'Description',
+                                      size: 14,
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 50,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    child: AppTextLarge(
+                                      text: 'Montant',
+                                      size: 14,
+                                    ),
+                                  ),
+                                ),
+                                TableCell(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                      ),
+                                    ),
+                                    child: AppTextLarge(
+                                      text: 'Date',
+                                      size: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
 
-                          // Lignes de transactions avec numérotation
-                          ...transactions.asMap().entries.map((entry) {
-                            int index = entry.key; // L'index de la transaction
-                            Map<String, dynamic> transaction = entry.value;
+                        // Affichage des transactions par groupe de date
+                        Column(
+                          children: groupedTransactions.entries.map((entry) {
+                            DateTime date = entry.key;
+                            List<Map<String, dynamic>> transactionsForDate =
+                                entry.value;
 
-                            DateTime? transactionDate;
-
-                            // Vérifiez si la date est un Timestamp ou une chaîne
-                            if (transaction['date'] is Timestamp) {
-                              transactionDate =
-                                  (transaction['date'] as Timestamp).toDate();
-                            } else if (transaction['date'] is String) {
-                              transactionDate =
-                                  DateTime.tryParse(transaction['date']);
-                            }
-
-                            return TableRow(
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Text(
-                                      (index + 1).toString(),
-                                    ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: AppText(
+                                    text:
+                                        "Date le ${dateFormat.format(date)}", // Affichage de la date
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Center(
-                                      child: AppText(
-                                          text: transaction['category'] ?? '',
-                                          textAlign: TextAlign.center),
-                                    ),
+
+                                // Tableau des transactions pour cette date
+                                Container(
+                                  padding: EdgeInsets.all(5.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(),
+                                    color: Theme.of(context).highlightColor,
                                   ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: ConstrainedBox(
-                                      constraints:
-                                          const BoxConstraints(maxWidth: 150),
-                                      child: AppText(
-                                        text: transaction['description'] ?? '',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Center(
-                                      child: AppText(
-                                          text:
-                                              '${transaction['price']} ${transaction['currency'] ?? '€'}'),
-                                    ),
-                                  ),
-                                ),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Center(
-                                      child: AppText(
-                                        text: transactionDate != null
-                                            ? dateFormat.format(transactionDate)
-                                            : '',
-                                      ),
-                                    ),
+                                  child: Table(
+                                    border: TableBorder.all(
+                                        style: BorderStyle.none),
+                                    columnWidths: const {
+                                      0: FlexColumnWidth(0.6),
+                                      1: FlexColumnWidth(2),
+                                      2: FlexColumnWidth(3),
+                                      3: FlexColumnWidth(2),
+                                    },
+                                    children: transactionsForDate
+                                        .asMap()
+                                        .entries
+                                        .map((entry) {
+                                      int index = entry.key;
+                                      Map<String, dynamic> transaction =
+                                          entry.value;
+
+                                      return TableRow(
+                                        children: [
+                                          TableCell(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child:
+                                                  Text((index + 1).toString()),
+                                            ),
+                                          ),
+                                          TableCell(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: Center(
+                                                child: AppText(
+                                                  text:
+                                                      transaction['category'] ??
+                                                          '',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          TableCell(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: ConstrainedBox(
+                                                constraints:
+                                                    const BoxConstraints(
+                                                        maxWidth: 150),
+                                                child: AppText(
+                                                  text: transaction[
+                                                          'description'] ??
+                                                      '',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          TableCell(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: Center(
+                                                child: AppText(
+                                                  text:
+                                                      '${transaction['price']} ${transaction['currency'] ?? '€'}',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }).toList(),
                                   ),
                                 ),
                               ],
                             );
                           }).toList(),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 );
