@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
             "Utilisateur connecté : $userId"); // Afficher l'ID de l'utilisateur
 
         return Scaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: Theme.of(context).colorScheme.background,
           body: CustomScrollView(
             slivers: [
               _buildSliverAppBar(),
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
 
   SliverAppBar _buildSliverAppBar() {
     return SliverAppBar(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.background,
       expandedHeight: 180.0,
       floating: false,
       pinned: true,
@@ -101,11 +101,11 @@ class _HomePageState extends State<HomePage> {
               AppTextLarge(
                 text: "Balar",
                 size: 30.0,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.inverseSurface,
               ),
-              const Icon(
-                Icons.circle_notifications_outlined,
-                color: Colors.white,
+              Icon(
+                Icons.notifications_outlined,
+                color: Theme.of(context).colorScheme.inverseSurface,
               )
             ],
           ),
@@ -113,13 +113,15 @@ class _HomePageState extends State<HomePage> {
         titlePadding: const EdgeInsets.only(left: 15, bottom: 10, right: 15),
         background: Stack(
           children: [
-            Container(color: Colors.black),
+            Container(
+              color: Theme.of(context).colorScheme.background,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 0.0, top: 50),
               child: Opacity(
                 opacity: 1.0,
                 child: Image.asset(
-                  'assets/logo22.png',
+                  'assets/logo21.png',
                   height: 100,
                 ),
               ),
@@ -169,7 +171,7 @@ class _HomePageState extends State<HomePage> {
   NextButton _buildNextButton(
       BuildContext context, String label, IconData icon, String type) {
     return NextButton(
-      width: MediaQuery.of(context).size.width * 0.31,
+      width: MediaQuery.of(context).size.width * 0.3,
       onTap: () {
         Navigator.push(
           context,
@@ -182,8 +184,14 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(icon, color: Colors.white),
-          AppText(text: label, color: Colors.white),
+          Icon(
+            icon,
+            color: Theme.of(context).colorScheme.inverseSurface,
+          ),
+          AppText(
+            text: label,
+            color: Theme.of(context).colorScheme.inverseSurface,
+          ),
         ],
       ),
     );
@@ -225,7 +233,19 @@ class _HomePageState extends State<HomePage> {
       stream: _zipStreams(revenueStream, expenseStream, debtStream),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center(
+            child: Container(
+              margin:
+                  EdgeInsets.only(top: 5, bottom: 5, right: 10.0, left: 10.0),
+              padding: EdgeInsets.all(5),
+              height: 150,
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Theme.of(context).highlightColor,
+              ),
+            ),
+          );
         }
         if (snapshot.hasError) {
           return Center(child: Text('Erreur: ${snapshot.error}'));
@@ -284,8 +304,11 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-
-                  AppTextLarge(text: day, color: Colors.white,size: 16.0,),
+                  AppTextLarge(
+                    text: day,
+                    color: Theme.of(context).colorScheme.inverseSurface,
+                    size: 16.0,
+                  ),
                 ],
               ),
             ],
@@ -348,18 +371,21 @@ class _HomePageState extends State<HomePage> {
               height: 30,
               width: 30,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.white),
+                border: Border.all(color: Theme.of(context).highlightColor),
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Icon(CupertinoIcons.money_dollar,),
+              child: Icon(
+                Icons.account_balance,
+              ),
             ),
             sizedbox2,
-            AppText(text: title, color: Colors.white),
+            AppText(
+                text: title,
+                color: Theme.of(context).colorScheme.inverseSurface),
           ],
         ),
         AppText(text: amount, color: color),
       ],
-
     );
   }
 }

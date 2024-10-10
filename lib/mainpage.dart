@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:balare/pages/expenses_page.dart';
 import 'package:balare/pages/home_page.dart';
 import 'package:balare/pages/income_page.dart';
 import 'package:balare/pages/user_page.dart';
@@ -28,20 +27,15 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      backgroundColor:Theme.of(context).colorScheme.background,
       body: _widgetOptions.elementAt(currentIndex),
       bottomNavigationBar: Container(
-        // decoration: BoxDecoration(
-        //   border: Border(
-        //     top: BorderSide(
-        //       color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-        //       width: 1,
-        //     ),
-        //   ),
-        // ),
         child: BottomNavigationBar(
-          backgroundColor: Colors.black38,
-          selectedItemColor: Theme.of(context).colorScheme.onBackground,
-          elevation: 0,
+          backgroundColor:             Theme.of(context).colorScheme.background,
+
+        selectedItemColor: Theme.of(context).colorScheme.onBackground,
+          elevation: 10,
           showSelectedLabels: true,
           showUnselectedLabels: true,
           currentIndex: currentIndex,

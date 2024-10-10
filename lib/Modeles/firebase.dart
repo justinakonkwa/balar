@@ -97,7 +97,8 @@ class AllFunctions {
 
       _showDialog(context, 'Succès', 'Transaction ajoutée avec succès.');
     } catch (e) {
-      _showDialog(context, 'Erreur', 'Échec de l\'ajout de la transaction. Veuillez réessayer plus tard.');
+      _showDialog(context, 'Erreur',
+          'Échec de l\'ajout de la transaction. Veuillez réessayer plus tard.');
       print('Erreur lors de l\'ajout de la transaction: $e');
     }
   }
