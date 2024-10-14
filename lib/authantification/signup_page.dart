@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, use_build_context_synchronously
 
+import 'package:balare/Modeles/format_text/phone_number.dart';
 import 'package:balare/Modeles/user_modele/user_modele.dart';
+import 'package:balare/authantification/login_page.dart';
 import 'package:balare/authantification/service_otp.dart';
 import 'package:balare/widget/Keyboard_widget.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/bouton_next.dart';
 import 'package:balare/widget/constantes.dart';
-import 'package:balare/widget/loading_widget.dart';
 import 'package:balare/widget/message_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -15,6 +16,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:pinput/pinput.dart';
 
 class SignupPage extends StatefulWidget {
@@ -28,7 +31,7 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isLoading = false;
-  String _countryCode='+243' ;
+  String _countryCode = '+243';
   bool isPhoneNumberEntered = false; // Variable pour gérer la progression
   bool _isPasswordVisible = false;
 
@@ -40,16 +43,12 @@ class _SignupPageState extends State<SignupPage> {
     _retrieveFCMToken();
   }
 
-
-
   Future<void> _retrieveFCMToken() async {
     fcmToken = await FirebaseMessaging.instance.getToken();
     print('FCM Token: $fcmToken');
   }
 
   Future<void> _verifierNumeroDeTelephone() async {
-
-
     if (_phoneNumberController.text.isNotEmpty &&
         _passwordController.text.isNotEmpty) {
       setState(() => isLoading = true);
@@ -73,13 +72,14 @@ class _SignupPageState extends State<SignupPage> {
           isSale: false,
         );
       }
-      String formattedPhoneNumber = '$_countryCode${_phoneNumberController.text.trim()}';
+      String formattedPhoneNumber =
+          '$_countryCode${_phoneNumberController.text.trim()}';
       print('Numéro de téléphone formaté: $formattedPhoneNumber');
 
       try {
         // Vérifier si le numéro de téléphone existe déjà
         bool phoneNumberExists =
-        await _checkIfPhoneNumberExists(formattedPhoneNumber);
+            await _checkIfPhoneNumberExists(formattedPhoneNumber);
         if (phoneNumberExists) {
           setState(() => isLoading = false);
           // Afficher un message indiquant que le compte existe déjà;
@@ -110,7 +110,8 @@ class _SignupPageState extends State<SignupPage> {
           },
           codeSent: (String verificationId, int? resendToken) {
             setState(() => isLoading = false);
-            print("Code envoyé avec succès");  // Ajoute cette ligne pour vérifier
+            print(
+                "Code envoyé avec succès"); // Ajoute cette ligne pour vérifier
 
             Navigator.push(
               context,
@@ -124,14 +125,12 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
             );
-
           },
           codeAutoRetrievalTimeout: (String verificationId) {
             // Handle timeout event
           },
         );
       } catch (e) {
-
         print('Erreur pendant la vérification du numéro de téléphone : $e');
         // Afficher un message d'erreur convivial
         showMessageDialog(
@@ -180,7 +179,6 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Future<void> _connexionAvecCredential(PhoneAuthCredential credential) async {
-
     try {
       UserCredential authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
@@ -240,6 +238,7 @@ Numéro de téléphone''',
           textAlign: TextAlign.center,
         ),
         sizedbox,
+        sizedbox,
         SizedBox(
           child: Row(
             children: [
@@ -247,9 +246,9 @@ Numéro de téléphone''',
                 height: 50,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).highlightColor,
                   ),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: CountryCodePicker(
                   backgroundColor: Colors.grey,
@@ -269,18 +268,20 @@ Numéro de téléphone''',
                 child: SizedBox(
                   height: 50,
                   child: CupertinoTextField(
+                    padding: EdgeInsets.only(left: 30),
                     controller: _phoneNumberController,
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
-                    keyboardType: TextInputType.none,
-                    placeholder: 'Phone Number',
+
+                    keyboardType:
+                        TextInputType.phone, // Permet l'entrée de chiffres
+                    placeholder: 'Numéro de téléphone',
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
+                      border:
+                          Border.all(color: Theme.of(context).highlightColor),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                   ),
                 ),
@@ -311,6 +312,31 @@ Numéro de téléphone''',
           child: isLoading
               ? CupertinoActivityIndicator(color: Colors.white)
               : AppText(text: "Continuer", color: Colors.white),
+        ),
+        Row(
+          children: [
+            AppText(
+              text: translate("Avez-vous déjà un compte ?"),
+              color: Theme.of(context).colorScheme.inverseSurface,
+            ),
+            Spacer(),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (BuildContext context) {
+                    return LoginPage();
+                  },
+                );
+              },
+              child: AppText(
+                text: translate("Se connecter"),
+                color: Theme.of(context).colorScheme.inverseSurface,
+              ),
+            )
+          ],
         ),
       ],
     );

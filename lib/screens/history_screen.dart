@@ -115,11 +115,11 @@ class HistoriquePage extends StatelessWidget {
                 // Affichage du tableau complet
                 return SingleChildScrollView(
                   child: Container(
+                    margin: EdgeInsets.all(10.0),
                     padding: EdgeInsets.all(5.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(),
-                      color: Theme.of(context).highlightColor,
+                      border: Border.all(color: Theme.of(context).highlightColor,),
                     ),
                     child: Column(
                       children: [
@@ -140,8 +140,7 @@ class HistoriquePage extends StatelessWidget {
                                   height: 50,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(context).highlightColor,
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(10),
                                       bottomLeft: Radius.circular(10),
@@ -153,8 +152,7 @@ class HistoriquePage extends StatelessWidget {
                                   child: Container(
                                     alignment: Alignment.center,
                                     height: 50,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(context).highlightColor,
                                     child: AppTextLarge(
                                       text: 'Catégorie',
                                       size: 14,
@@ -165,8 +163,7 @@ class HistoriquePage extends StatelessWidget {
                                   child: Container(
                                     alignment: Alignment.center,
                                     height: 50,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(context).highlightColor,
                                     child: AppTextLarge(
                                       text: 'Description',
                                       size: 14,
@@ -177,8 +174,7 @@ class HistoriquePage extends StatelessWidget {
                                   child: Container(
                                     alignment: Alignment.center,
                                     height: 50,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(context).highlightColor,
                                     child: AppTextLarge(
                                       text: 'Montant',
                                       size: 14,
@@ -190,8 +186,7 @@ class HistoriquePage extends StatelessWidget {
                                     alignment: Alignment.center,
                                     height: 50,
                                     decoration: BoxDecoration(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
+                                      color: Theme.of(context).highlightColor,
                                       borderRadius: BorderRadius.only(
                                         topRight: Radius.circular(10),
                                         bottomRight: Radius.circular(10),
@@ -233,8 +228,7 @@ class HistoriquePage extends StatelessWidget {
                                   padding: EdgeInsets.all(5.0),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(),
-                                    color: Theme.of(context).highlightColor,
+                                    border: Border.all(color: Theme.of(context).highlightColor,),
                                   ),
                                   child: Table(
                                     border: TableBorder.all(

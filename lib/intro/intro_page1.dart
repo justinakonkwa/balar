@@ -26,13 +26,13 @@ class IntroPage1 extends StatelessWidget {
               child: Image.asset('assets/intro4.png'),
             ),
             AppTextLarge(
-              text: 'Manage your stock',color: Theme.of(context).colorScheme.onBackground,
+              text: 'Manage your money',color: Theme.of(context).colorScheme.onBackground,
             ),
              SizedBox(height: 40),
              AppText(
               textAlign: TextAlign.center,
               text:
-                  'Gérez votre stock en toute simplicité et efficacité grâce à nos outils avancés de gestion des stocks.',
+                  'Stop wondering where your money goes, let Money AI crunch the numbers, focus on living your life.',
           
             )
           ],

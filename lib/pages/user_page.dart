@@ -78,6 +78,8 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+
         centerTitle: true,
         title: AppText(
           text: translate("settings.title"),
@@ -100,6 +102,13 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.only(left: 20.0, right: 20),
         child: ListView(
           children: [
+            sizedbox,
+            AppText(
+              text: translate("settings.general").toUpperCase(),
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            sizedbox,
+            sizedbox,
             Container(
               padding:
                   EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
@@ -122,8 +131,9 @@ class _SettingsPageState extends State<SettingsPage> {
                             radius: 50,
                             backgroundColor: Colors.grey,
                             child: AppTextLarge(
-                              text: nameController.text.isNotEmpty?
-                              nameController.text[0]:'',
+                              text: nameController.text.isNotEmpty
+                                  ? nameController.text[0]
+                                  : '',
                               size: 40,
                             ),
                           ),
@@ -194,11 +204,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            AppText(
-              text: translate("settings.general").toUpperCase(),
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
+            SizedBox(height: 15),
+            // AppText(
+            //   text: translate("settings.general").toUpperCase(),
+            //   color: Theme.of(context).colorScheme.onBackground,
+            // ),
             Container(
               margin: const EdgeInsets.only(
                 top: 8,
@@ -240,10 +250,10 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             SizedBox(height: 20),
-            AppText(
-              text: translate("settings.general").toUpperCase(),
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
+            // AppText(
+            //   text: translate("settings.general").toUpperCase(),
+            //   color: Theme.of(context).colorScheme.onBackground,
+            // ),
             Container(
               margin: const EdgeInsets.only(
                 top: 8,
@@ -273,10 +283,10 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             SizedBox(height: 20),
-            AppText(
-              text: translate("settings.general").toUpperCase(),
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
+            // AppText(
+            //   text: translate("settings.general").toUpperCase(),
+            //   color: Theme.of(context).colorScheme.onBackground,
+            // ),
             Container(
               margin: const EdgeInsets.only(
                 top: 8,
@@ -304,7 +314,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       },
                       icon: CupertinoIcons.arrow_3_trianglepath,
                       title: translate("settings.terms_and_conditions"),
-                      showLast: false),
+                      showLast: true),
                 ],
               ),
             ),

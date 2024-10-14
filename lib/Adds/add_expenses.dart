@@ -242,7 +242,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                     addTransaction(
                         context); // Appeler la méthode pour ajouter une transaction
                   },
-                  child: Text('Ajouter ${widget.type.capitalizeFirst}'),
+                  child: AppText(text: 'Ajouter ${widget.type.capitalizeFirst}',color: Theme.of(context).colorScheme.surface,),
                 ),
               ],
             ],

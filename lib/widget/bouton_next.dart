@@ -27,7 +27,7 @@ class NextButton extends StatelessWidget {
         height: 50,
         decoration: BoxDecoration(
           borderRadius: borderRadius + borderRadius,
-          color: color ?? Theme.of(context).colorScheme.primary,
+          color: color ?? Theme.of(context).colorScheme.onBackground,
         ),
         padding: const EdgeInsets.all(10),
         child: child,

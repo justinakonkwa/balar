@@ -20,17 +20,17 @@ class CustomKeyboard extends StatelessWidget {
       child: Column(
         children: [
           // Première rangée de touches
-          _buildKeyboardRow(['1', '2', '3']),
+          _buildKeyboardRow(['1', '2', '3'],context),
           // Deuxième rangée de touches
-          _buildKeyboardRow(['4', '5', '6']),
+          _buildKeyboardRow(['4', '5', '6'],context),
           // Troisième rangée de touches
-          _buildKeyboardRow(['7', '8', '9']),
+          _buildKeyboardRow(['7', '8', '9'],context),
           // Dernière rangée avec espace et retour arrière
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildKey('0'),
-              _buildKey('X', onTap: onBackspace), // Touche retour arrière
+              _buildKey('0',context),
+              _buildKey('X',context, onTap: onBackspace), // Touche retour arrière
             ],
           ),
         ],
@@ -38,14 +38,14 @@ class CustomKeyboard extends StatelessWidget {
     );
   }
 
-  Widget _buildKeyboardRow(List<String> keys) {
+  Widget _buildKeyboardRow(List<String> keys,BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: keys.map((key) => _buildKey(key)).toList(),
+        children: keys.map((key) => _buildKey(key, context)).toList()
     );
   }
 
-  Widget _buildKey(String value, {VoidCallback? onTap}) {
+  Widget _buildKey(String value, BuildContext context, {VoidCallback? onTap}) {
     return GestureDetector(
       onTap: onTap ?? () => _textInputHandler(value),
       child: Container(
@@ -54,7 +54,7 @@ class CustomKeyboard extends StatelessWidget {
         height: 60,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black45),
+          border: Border.all(color: Theme.of(context).highlightColor),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(

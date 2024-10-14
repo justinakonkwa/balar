@@ -92,6 +92,7 @@ class _HomePageState extends State<HomePage> {
 
   SliverAppBar _buildSliverAppBar() {
     return SliverAppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Theme.of(context).colorScheme.background,
       expandedHeight: 180.0,
       floating: false,

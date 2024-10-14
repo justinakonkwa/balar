@@ -1,11 +1,19 @@
+import 'package:balare/Modeles/format_text/phone_number.dart';
+import 'package:balare/authantification/service_otp.dart';
+import 'package:balare/authantification/signup_page.dart';
 import 'package:balare/widget/Keyboard_widget.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/bouton_next.dart';
 import 'package:balare/widget/constantes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:pinput/pinput.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,12 +25,127 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _otpController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool isLoading = false;
-  String _countryCode = '';
-  bool isPhoneNumberEntered = false; // Variable pour gérer la progression
-  bool _isPasswordVisible =
-      false; // Variable pour gérer la visibilité du mot de passe
+  String _countryCode = '+243';
+  bool isPhoneNumberEntered = false;
+  bool _isPasswordVisible = false;
+  String? fcmToken;
+
+  @override
+  void initState() {
+    super.initState();
+    _retrieveFCMToken();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        _updateFCMToken();
+      }
+    });
+  }
+
+  // Méthode pour récupérer le token FCM
+  Future<void> _retrieveFCMToken() async {
+    fcmToken = await FirebaseMessaging.instance.getToken();
+    print('FCM Token: $fcmToken');
+  }
+
+  // Méthode pour mettre à jour le token FCM
+  Future<void> _updateFCMToken() async {
+    try {
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({
+          'fcmToken': fcmToken,
+        });
+      }
+    } catch (e) {
+      print('Erreur lors de la mise à jour du token FCM : $e');
+    }
+  }
+
+  Future<void> _sendOTP() async {
+    if (_phoneNumberController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty) {
+      // AllFonction().closeKeyboard(context);
+      setState(() => isLoading = true);
+
+      // Formater le numéro de téléphone avec le code pays
+      String formattedPhoneNumber =
+          '$_countryCode${_phoneNumberController.text.trim()}';
+      print('Numéro de téléphone formaté: $formattedPhoneNumber');
+
+      try {
+        QuerySnapshot<Map<String, dynamic>> userSnapshot =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .where('phoneNumber', isEqualTo: formattedPhoneNumber)
+            .where('password', isEqualTo: _passwordController.text)
+            .get();
+
+        if (userSnapshot.docs.isNotEmpty) {
+          await FirebaseAuth.instance.verifyPhoneNumber(
+            phoneNumber: formattedPhoneNumber,
+            verificationCompleted: (PhoneAuthCredential credential) async {
+              // Authentification automatique réussie avec OTP
+              await FirebaseAuth.instance.signInWithCredential(credential);
+              _showSnackBar(context, 'Connexion réussie !');
+              Navigator.pushReplacementNamed(context, '/home');
+            },
+            verificationFailed: (FirebaseAuthException e) {
+              print('Erreur OTP : ${e.message}');
+              _showSnackBar(context, 'OTP invalide. Veuillez réessayer.');
+              setState(() => isLoading = false);
+            },
+            codeSent: (String verificationId, int? resendToken) {
+              _showSnackBar(context, 'OTP envoyé avec succès !');
+              setState(() => isLoading = false);
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (BuildContext context) {
+                  return VerificationOTPPage(
+                    phoneNumber: formattedPhoneNumber,
+                    verificationId: verificationId,
+                    password: _passwordController.text,
+                    isSignUp: false,
+                    fcmToken: fcmToken ?? '',
+                  );
+                },
+              );
+            },
+            codeAutoRetrievalTimeout: (String verificationId) {
+              _showSnackBar(context, 'Le délai pour entrer l\'OTP a expiré.');
+            },
+          );
+        } else {
+          _showSnackBar(context, 'Informations incorrectes.');
+          setState(() => isLoading = false);
+        }
+      } catch (e) {
+        _showSnackBar(context, 'Erreur lors de l\'envoi de l\'OTP.');
+        print('Erreur lors de la vérification : $e');
+        setState(() => isLoading = false);
+      }
+    } else {
+      _showSnackBar(context, 'Veuillez compléter vos informations.');
+      setState(() => isLoading = false);
+    }
+  }
+
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2),
+        backgroundColor: Colors.red, // Changez la couleur selon vos besoins
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +177,8 @@ Numéro de téléphone''',
           textAlign: TextAlign.center,
         ),
         sizedbox,
+        sizedbox,
+
         SizedBox(
           child: Row(
             children: [
@@ -61,9 +186,9 @@ Numéro de téléphone''',
                 height: 50,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).highlightColor,
                   ),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: CountryCodePicker(
                   backgroundColor: Colors.grey,
@@ -83,18 +208,20 @@ Numéro de téléphone''',
                 child: SizedBox(
                   height: 50,
                   child: CupertinoTextField(
+                    padding: EdgeInsets.only(left: 30),
                     controller: _phoneNumberController,
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
+
                     keyboardType: TextInputType.none,
                     placeholder: 'Phone Number',
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Theme.of(context).highlightColor
                       ),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                   ),
                 ),
@@ -125,6 +252,31 @@ Numéro de téléphone''',
           child: isLoading
               ? CupertinoActivityIndicator(color: Colors.white)
               : AppText(text: "Continuer", color: Colors.white),
+        ),
+        Row(
+          children: [
+            AppText(
+              text: translate("Vous n'avez pas de compte ?"),
+              color: Theme.of(context).colorScheme.inverseSurface,
+            ),
+            Spacer(),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (BuildContext context) {
+                    return SignupPage();
+                  },
+                );
+              },
+              child: AppText(
+                text: translate("S'inscrire"),
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
+            )
+          ],
         ),
       ],
     );
@@ -162,7 +314,7 @@ Numéro de téléphone''',
           obscuringCharacter: '*', // Afficher les astérisques au lieu de points
           keyboardType: TextInputType.none,
           length: 4,
-          controller: _otpController,
+          controller: _passwordController,
           onCompleted: (String pin) async {},
         ),
         IconButton(
@@ -178,22 +330,22 @@ Numéro de téléphone''',
         sizedbox,
         CustomKeyboard(
           onTextInput: (value) {
-            _otpController.text += value;
+            _passwordController.text += value;
           },
           onBackspace: () {
-            if (_otpController.text.isNotEmpty) {
-              _otpController.text = _otpController.text
-                  .substring(0, _otpController.text.length - 1);
+            if (_passwordController.text.isNotEmpty) {
+              _passwordController.text = _passwordController.text
+                  .substring(0, _passwordController.text.length - 1);
             }
           },
         ),
         sizedbox,
         NextButton(
           width: double.maxFinite,
-          onTap: () {},
+          onTap: () {_sendOTP();},
           child: isLoading
               ? CupertinoActivityIndicator(color: Colors.white)
-              : AppText(text: "Continuer", color: Colors.white),
+              : AppText(text: "Continuer.", color: Colors.white),
         ),
       ],
     );
