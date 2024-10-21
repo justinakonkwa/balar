@@ -1,4 +1,4 @@
-
+import 'package:balare/screens/plan_epargne_screen.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/textfield.dart';
@@ -14,59 +14,102 @@ class ContributionListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: AppText(text: "Mes Contributions"),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser?.uid)
-            .collection('epargnes')
-            .doc(epargneId) // Utiliser l'ID du plan d'épargne
-            .collection('contributions')
-            .orderBy('date', descending: true) // Trier par date
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
+        appBar: AppBar(
+          centerTitle: true,
+          leading: Row(
+            children: [
+              Row(
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EpargneListPage(),
+                          ),
+                        );
+                      },
+                      child: Icon(Icons.arrow_back)),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  AppText(text: 'back')
+                ],
+              ),
+            ],
+          ),
+          title: AppText(text: "Mes Contributions"),
+        ),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser?.uid)
+              .collection('epargnes')
+              .doc(epargneId) // Utiliser l'ID du plan d'épargne
+              .collection('contributions')
+              .orderBy('date', descending: true) // Trier par date
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-          if (snapshot.hasError) {
-            return Center(child: Text('Erreur : ${snapshot.error}'));
-          }
+            if (snapshot.hasError) {
+              return Center(child: Text('Erreur : ${snapshot.error}'));
+            }
 
-          final contributions = snapshot.data!.docs;
+            final contributions = snapshot.data!.docs;
 
-          if (contributions.isEmpty) {
-            return Center(child: Text("Aucune contribution enregistrée"));
-          }
+            if (contributions.isEmpty) {
+              return Center(child: Text("Aucune contribution enregistrée"));
+            }
 
-          return ListView.builder(
-            itemCount: contributions.length,
-            itemBuilder: (context, index) {
-              final contribution = contributions[index];
-              return ListTile(
-                title: AppText(text: "Montant : \$${contribution['montant']}"),
-                subtitle:
-                AppText(text: "Date : ${contribution['date'].toDate()}"),
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showContributionModal(context);
-        },
-        child: Icon(Icons.add),
-      ),
-    );
+            return ListView.builder(
+              itemCount: contributions.length,
+              itemBuilder: (context, index) {
+                final contribution = contributions[index];
+                return Container(
+                  margin: EdgeInsets.only(left: 15.0,right: 15.0,top: 10, ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Theme.of(context).highlightColor),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: Theme.of(context)
+                    //         .colorScheme
+                    //         .inverseSurface
+                    //         .withOpacity(0.4),
+                    //     spreadRadius: 2,
+                    //     blurRadius: 10,
+                    //     offset: Offset(0, 0),
+                    //   ),
+                    // ],
+                  ),
+                  child: ListTile(
+                    title:
+                        AppText(text: "Montant : \$${contribution['montant']}"),
+                    subtitle:
+                        AppText(text: "Date : ${contribution['date'].toDate()}"),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _showContributionModal(context);
+          },
+          child: Icon(Icons.add),
+        ));
   }
 
   Future<void> _showContributionModal(BuildContext context) async {
     final TextEditingController _montantController = TextEditingController();
 
     showModalBottomSheet(
+      scrollControlDisabledMaxHeightRatio: 200,
+      isScrollControlled: true,
       context: context,
       builder: (context) {
         return Padding(
