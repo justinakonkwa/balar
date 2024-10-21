@@ -21,7 +21,7 @@ class IntroPage3 extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.47,
               width: 400,
-              child: Image.asset('assets/intro3.png'),
+              child: Image.asset('assets/splash1.png'),
             ),
             AppTextLarge(
                 text: 'Alertes Instantanées',

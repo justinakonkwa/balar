@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, use_build_context_synchronously
 
-import 'package:balare/Modeles/format_text/phone_number.dart';
 import 'package:balare/Modeles/user_modele/user_modele.dart';
 import 'package:balare/authantification/login_page.dart';
 import 'package:balare/authantification/service_otp.dart';

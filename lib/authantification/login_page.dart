@@ -1,4 +1,3 @@
-import 'package:balare/Modeles/format_text/phone_number.dart';
 import 'package:balare/authantification/service_otp.dart';
 import 'package:balare/authantification/signup_page.dart';
 import 'package:balare/widget/Keyboard_widget.dart';
@@ -6,7 +5,9 @@ import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/bouton_next.dart';
 import 'package:balare/widget/constantes.dart';
+import 'package:balare/widget/message_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -70,8 +71,16 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _sendOTP() async {
     if (_phoneNumberController.text.isNotEmpty &&
         _passwordController.text.isNotEmpty) {
-      // AllFonction().closeKeyboard(context);
       setState(() => isLoading = true);
+
+      // Vérifier la connexion Internet
+      var connectivityResult = await Connectivity().checkConnectivity();
+      if (connectivityResult == ConnectivityResult.none) {
+        _showSnackBar(context,
+            "Aucune connexion Internet. Veuillez vérifier votre connexion.");
+        setState(() => isLoading = false);
+        return; // Sortir de la méthode si pas de connexion
+      }
 
       // Formater le numéro de téléphone avec le code pays
       String formattedPhoneNumber =
@@ -80,24 +89,35 @@ class _LoginPageState extends State<LoginPage> {
 
       try {
         QuerySnapshot<Map<String, dynamic>> userSnapshot =
-        await FirebaseFirestore.instance
-            .collection('users')
-            .where('phoneNumber', isEqualTo: formattedPhoneNumber)
-            .where('password', isEqualTo: _passwordController.text)
-            .get();
+            await FirebaseFirestore.instance
+                .collection('users')
+                .where('phoneNumber', isEqualTo: formattedPhoneNumber)
+                .where('password', isEqualTo: _passwordController.text)
+                .get();
 
         if (userSnapshot.docs.isNotEmpty) {
           await FirebaseAuth.instance.verifyPhoneNumber(
             phoneNumber: formattedPhoneNumber,
             verificationCompleted: (PhoneAuthCredential credential) async {
-              // Authentification automatique réussie avec OTP
               await FirebaseAuth.instance.signInWithCredential(credential);
               _showSnackBar(context, 'Connexion réussie !');
               Navigator.pushReplacementNamed(context, '/home');
             },
             verificationFailed: (FirebaseAuthException e) {
               print('Erreur OTP : ${e.message}');
-              _showSnackBar(context, 'OTP invalide. Veuillez réessayer.');
+              showMessageDialog(
+                context,
+                title: "Erreur",
+                widget: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: AppText(
+                    textAlign: TextAlign.center,
+                    text: ('OTP invalide. Veuillez réessayer.'),
+                  ),
+                ),
+                isConfirmation: false,
+                isSale: false,
+              );
               setState(() => isLoading = false);
             },
             codeSent: (String verificationId, int? resendToken) {
@@ -122,27 +142,60 @@ class _LoginPageState extends State<LoginPage> {
             },
           );
         } else {
-          _showSnackBar(context, 'Informations incorrectes.');
+          showMessageDialog(
+            context,
+            title: "Erreur",
+            widget: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: AppText(
+                textAlign: TextAlign.center,
+                text:
+                    ('Vauillez verifier vos information vu qu\'ils sont  incorrectes.'),
+              ),
+            ),
+            isConfirmation: false,
+            isSale: false,
+          );
           setState(() => isLoading = false);
         }
       } catch (e) {
-        _showSnackBar(context, 'Erreur lors de l\'envoi de l\'OTP.');
+        showMessageDialog(
+          context,
+          title: "Erreur",
+          widget: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: AppText(
+                textAlign: TextAlign.center,
+                text: 'Erreur lors de l\'envoi de l\'OTP.'),
+          ),
+          isConfirmation: false,
+          isSale: false,
+        );
         print('Erreur lors de la vérification : $e');
         setState(() => isLoading = false);
       }
     } else {
-      _showSnackBar(context, 'Veuillez compléter vos informations.');
+      showMessageDialog(
+        context,
+        title: "Erreur",
+        widget: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: AppText(
+              textAlign: TextAlign.center,
+              text: 'Veuillez compléter vos informations au complet.'),
+        ),
+        isConfirmation: false,
+        isSale: false,
+      );
       setState(() => isLoading = false);
     }
   }
-
 
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
         duration: Duration(seconds: 2),
-        backgroundColor: Colors.red, // Changez la couleur selon vos besoins
       ),
     );
   }
@@ -178,7 +231,6 @@ Numéro de téléphone''',
         ),
         sizedbox,
         sizedbox,
-
         SizedBox(
           child: Row(
             children: [
@@ -214,13 +266,11 @@ Numéro de téléphone''',
                       fontFamily: 'Montserrat',
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
-
                     keyboardType: TextInputType.none,
                     placeholder: 'Phone Number',
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).highlightColor
-                      ),
+                      border:
+                          Border.all(color: Theme.of(context).highlightColor),
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
@@ -342,7 +392,9 @@ Numéro de téléphone''',
         sizedbox,
         NextButton(
           width: double.maxFinite,
-          onTap: () {_sendOTP();},
+          onTap: () {
+            _sendOTP();
+          },
           child: isLoading
               ? CupertinoActivityIndicator(color: Colors.white)
               : AppText(text: "Continuer.", color: Colors.white),

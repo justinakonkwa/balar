@@ -1,4 +1,3 @@
-
 // Widget de clavier personnalisé
 import 'package:flutter/material.dart';
 
@@ -20,17 +19,18 @@ class CustomKeyboard extends StatelessWidget {
       child: Column(
         children: [
           // Première rangée de touches
-          _buildKeyboardRow(['1', '2', '3'],context),
+          _buildKeyboardRow(['1', '2', '3'], context),
           // Deuxième rangée de touches
-          _buildKeyboardRow(['4', '5', '6'],context),
+          _buildKeyboardRow(['4', '5', '6'], context),
           // Troisième rangée de touches
-          _buildKeyboardRow(['7', '8', '9'],context),
+          _buildKeyboardRow(['7', '8', '9'], context),
           // Dernière rangée avec espace et retour arrière
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildKey('0',context),
-              _buildKey('X',context, onTap: onBackspace), // Touche retour arrière
+              _buildKey('0', context),
+              _buildKey('X', context,
+                  onTap: onBackspace), // Touche retour arrière
             ],
           ),
         ],
@@ -38,11 +38,10 @@ class CustomKeyboard extends StatelessWidget {
     );
   }
 
-  Widget _buildKeyboardRow(List<String> keys,BuildContext context) {
+  Widget _buildKeyboardRow(List<String> keys, BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: keys.map((key) => _buildKey(key, context)).toList()
-    );
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: keys.map((key) => _buildKey(key, context)).toList());
   }
 
   Widget _buildKey(String value, BuildContext context, {VoidCallback? onTap}) {

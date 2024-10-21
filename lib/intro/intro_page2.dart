@@ -24,7 +24,7 @@ class IntroPage2 extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.47,
               width: 400,
               child: Center(
-                child: Image.asset('assets/intro1.png'),
+                child: Image.asset('assets/splash1.png'),
               ),
             ),
             AppTextLarge(

@@ -23,7 +23,7 @@ class IntroPage1 extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.47,
               width: 400,
-              child: Image.asset('assets/intro4.png'),
+              child: Image.asset('assets/splash1.png'),
             ),
             AppTextLarge(
               text: 'Manage your money',color: Theme.of(context).colorScheme.onBackground,
