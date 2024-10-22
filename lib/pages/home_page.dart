@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-     return StreamBuilder<String?>(
+    return StreamBuilder<String?>(
       stream: AllFunctions()
           .getUserIdStream(), // Remplacez par votre méthode qui retourne un Stream<String?>
       builder: (context, snapshot) {
@@ -294,8 +294,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.only(
             left: 20,
             right: 20,
-            bottom: 5.0,
-            top: 5.0,
+            top: 10.0,
           ),
           decoration: BoxDecoration(
             border: Border.all(color: Theme.of(context).highlightColor),
@@ -309,15 +308,27 @@ class _HomePageState extends State<HomePage> {
                   'Revenus',
                   '\$${totalRevenue.toStringAsFixed(2)}',
                   Colors.green,
+                  Icon(
+                    Icons.money_sharp,
+                  ),
                   context),
               sizedbox,
-              _buildTransactionDetail('Dépenses',
-                  '\$${totalExpenses.toStringAsFixed(2)}', Colors.red, context),
+              _buildTransactionDetail(
+                  'Dépenses',
+                  '\$${totalExpenses.toStringAsFixed(2)}',
+                  Colors.red,
+                  Icon(
+                    Icons.attach_money,
+                  ),
+                  context),
               sizedbox,
               _buildTransactionDetail(
                   'Dettes',
                   '\$${totalDebts.toStringAsFixed(2)}',
                   Colors.lightBlueAccent,
+                  Icon(
+                    Icons.account_balance,
+                  ),
                   context),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -379,8 +390,8 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Widget _buildTransactionDetail(
-      String title, String amount, Color color, BuildContext context) {
+  Widget _buildTransactionDetail(String title, String amount, Color color,
+      Icon icon, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -393,9 +404,7 @@ class _HomePageState extends State<HomePage> {
                 border: Border.all(color: Theme.of(context).highlightColor),
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Icon(
-                Icons.account_balance,
-              ),
+              child: icon,
             ),
             sizedbox2,
             AppText(
