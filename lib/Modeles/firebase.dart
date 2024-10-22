@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,23 @@ class AllFunctions {
   Future<String?> getUserId() async {
     User? user = FirebaseAuth.instance.currentUser;
     return user?.uid;
+  }
+  final StreamController<String?> _userIdController = StreamController<String?>();
+
+  AllFunctions() {
+    // Écoutez les changements d'état de l'utilisateur
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      _userIdController.add(user?.uid);
+    });
+  }
+
+  Stream<String?> getUserIdStream() {
+    return _userIdController.stream;
+  }
+
+  void dispose() {
+    _userIdController.close(); // Fermez le StreamController lorsque vous n'en avez plus besoin
+
   }
 
   static Future<void> addExpense(

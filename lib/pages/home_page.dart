@@ -58,9 +58,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String?>(
-      future: AllFunctions().getUserId(),
+     return StreamBuilder<String?>(
+      stream: AllFunctions()
+          .getUserIdStream(), // Remplacez par votre méthode qui retourne un Stream<String?>
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -147,7 +153,6 @@ class _HomePageState extends State<HomePage> {
 
   SliverList _buildButtonsRow(BuildContext context) {
     return SliverList(
-
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return Padding(

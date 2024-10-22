@@ -18,22 +18,23 @@ class ContributionListPage extends StatelessWidget {
           centerTitle: true,
           leading: Row(
             children: [
-              Row(
-                children: [
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => EpargneListPage(),
-                          ),
-                        );
-                      },
-                      child: Icon(Icons.arrow_back)),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  AppText(text: 'back')
-                ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EpargneListPage(),
+                    ),
+                  );
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.arrow_back),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    AppText(text: 'back')
+                  ],
+                ),
               ),
             ],
           ),
@@ -68,28 +69,21 @@ class ContributionListPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final contribution = contributions[index];
                 return Container(
-                  margin: EdgeInsets.only(left: 15.0,right: 15.0,top: 10, ),
+                  margin: EdgeInsets.only(
+                    left: 15.0,
+                    right: 15.0,
+                    top: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.background,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Theme.of(context).highlightColor),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //     color: Theme.of(context)
-                    //         .colorScheme
-                    //         .inverseSurface
-                    //         .withOpacity(0.4),
-                    //     spreadRadius: 2,
-                    //     blurRadius: 10,
-                    //     offset: Offset(0, 0),
-                    //   ),
-                    // ],
                   ),
                   child: ListTile(
                     title:
                         AppText(text: "Montant : \$${contribution['montant']}"),
-                    subtitle:
-                        AppText(text: "Date : ${contribution['date'].toDate()}"),
+                    subtitle: AppText(
+                        text: "Date : ${contribution['date'].toDate()}"),
                   ),
                 );
               },
@@ -97,10 +91,14 @@ class ContributionListPage extends StatelessWidget {
           },
         ),
         floatingActionButton: FloatingActionButton(
+          shape: CircleBorder(),
           onPressed: () {
             _showContributionModal(context);
           },
-          child: Icon(Icons.add),
+          child: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.inverseSurface,
+          ),
         ));
   }
 

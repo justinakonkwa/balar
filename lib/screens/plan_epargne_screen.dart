@@ -1,4 +1,4 @@
-import 'package:balare/pages/income_page.dart';
+import 'package:balare/mainpage.dart';
 import 'package:balare/screens/contribution_screen.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
@@ -14,19 +14,19 @@ class EpargneListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        leading: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Icon(Icons.arrow_back),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            AppText(text: 'back')
-          ],
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Row(
+            children: [
+              Icon(Icons.arrow_back),
+              SizedBox(
+                width: 5,
+              ),
+              AppText(text: 'back')
+            ],
+          ),
         ),
         title: AppText(text: "Mes Plans d'Épargne"),
       ),
@@ -39,200 +39,203 @@ class EpargneListPage extends StatelessWidget {
               .collection('epargnes')
               .snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+            // Liste d'éléments à afficher par défaut, avant que les données ne soient chargées
+            List<Widget> content = [];
+
+            // Nombre fixe de conteneurs affichés par défaut (hors ligne ou avant chargement des données)
+            for (var i = 0; i < 4; i++) {
+              content.add(Container(
+                height: 200,
+                margin: EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300], // Couleur grise par défaut
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ));
             }
 
-            if (snapshot.hasError) {
-              return Center(
-                child: Text('Erreur : ${snapshot.error}'),
-              );
-            }
+            // Si les données sont disponibles, on remplace les conteneurs avec les vraies données
+            if (snapshot.hasData) {
+              final epargnes = snapshot.data!.docs;
 
-            final epargnes = snapshot.data!.docs;
+              if (epargnes.isEmpty) {
+                content.add(
+                    Center(child: Text("Aucun plan d'épargne enregistré")));
+              } else {
+                content
+                    .clear(); // Supprime les conteneurs par défaut pour afficher les vraies données
 
-            if (epargnes.isEmpty) {
-              return Center(
-                child: Text("Aucun plan d'épargne enregistré"),
-              );
-            }
+                for (var epargne in epargnes) {
+                  final selectedEpargneId = epargne.id;
 
-            return ListView.builder(
-              itemCount: epargnes.length,
-              itemBuilder: (context, index) {
-                final epargne = epargnes[index];
-                final selectedEpargneId = epargne.id;
+                  content.add(StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                        .collection('epargnes')
+                        .doc(selectedEpargneId)
+                        .collection('contributions')
+                        .snapshots(),
+                    builder: (context, contributionSnapshot) {
+                      if (contributionSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
 
-                return FutureBuilder<QuerySnapshot>(
-                  future: FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(FirebaseAuth.instance.currentUser?.uid)
-                      .collection('epargnes')
-                      .doc(selectedEpargneId)
-                      .collection('contributions')
-                      .get(),
-                  builder: (context, contributionSnapshot) {
-                    if (!contributionSnapshot.hasData) {
-                      return CircularProgressIndicator();
-                    }
+                      if (contributionSnapshot.hasError) {
+                        return Center(
+                            child:
+                                Text('Erreur : ${contributionSnapshot.error}'));
+                      }
 
-                    final contributions = contributionSnapshot.data!.docs;
-                    double totalContributions = contributions.fold(
-                        0, (sum, doc) => sum + doc['montant']);
+                      final contributions =
+                          contributionSnapshot.data?.docs ?? [];
+                      double totalContributions = contributions.fold(
+                          0, (sum, doc) => sum + doc['montant']);
 
-                    double objectif = epargne['objectif'];
-                    double progression =
-                        (totalContributions / objectif).clamp(0.0, 1.0);
+                      double objectif = epargne['objectif'];
+                      double progression =
+                          (totalContributions / objectif).clamp(0.0, 1.0);
 
-                    // Déterminer la couleur de la progression en fonction des intervalles
-                    Color progressColor;
-                    if (progression <= 0.25) {
-                      progressColor = Colors.red;
-                    } else if (progression <= 0.45) {
-                      progressColor = Colors.orange;
-                    } else if (progression <= 0.65) {
-                      progressColor = Colors.yellow;
-                    } else if (progression <= 0.85) {
-                      progressColor = Colors.lightGreen;
-                    } else {
-                      progressColor = Colors.green;
-                    }
+                      Color progressColor;
+                      if (progression <= 0.25) {
+                        progressColor = Colors.red;
+                      } else if (progression <= 0.45) {
+                        progressColor = Colors.orange;
+                      } else if (progression <= 0.65) {
+                        progressColor = Colors.yellow;
+                      } else if (progression <= 0.85) {
+                        progressColor = Colors.lightGreen;
+                      } else {
+                        progressColor = Colors.green;
+                      }
 
-                    return Container(
-                      margin: EdgeInsets.only(top: 10),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
-                        borderRadius: BorderRadius.circular(20),
-                        border:
-                            Border.all(color: Theme.of(context).highlightColor),
-                        // boxShadow: [
-                        //   BoxShadow(
-                        //     color: Theme.of(context)
-                        //         .colorScheme
-                        //         .inverseSurface
-                        //         .withOpacity(0.4),
-                        //     spreadRadius: 2,
-                        //     blurRadius: 10,
-                        //     offset: Offset(0, 5),
-                        //   ),
-                        // ],
-                      ),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Padding(
-                              padding: EdgeInsets.only(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.2),
-                              child: Center(
-                                child: AppTextLarge(
-                                  text: epargne['nom'],
-                                  size: 18,
-                                ),
-                              ),
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    AppText(text: "Objectif :"),
-                                    AppTextLarge(
-                                      text: "\$${epargne['objectif']}",
-                                      size: 18,
-                                    ),
-                                  ],
-                                ),
-                                AppText(text: "Fin: ${epargne['date_limite']}"),
-
-                                AppText(
-                                    text:
-                                        "Fréquence : ${epargne['frequence']}"),
-                                SizedBox(height: 10),
-
-                                // Utilisation de Stack pour afficher les marqueurs et la barre de progression
-
-                                AppText(
-                                  text:
-                                      "Montant épargné : \$${totalContributions.toStringAsFixed(2)} / \$${objectif.toStringAsFixed(2)}",
-                                ),
-                              ],
-                            ),
-                            trailing: Column(
-                              children: [
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color:
-                                              Theme.of(context).highlightColor),
-                                      borderRadius: BorderRadius.circular(12)),
-                                  child: IconButton(
-                                    icon: Icon(Icons.edit),
-                                    onPressed: () {
-                                      _showEditEpargneModal(
-                                          context, selectedEpargneId, epargne);
-                                    },
+                      return Container(
+                        margin: EdgeInsets.only(top: 10),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.background,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                              color: Theme.of(context).highlightColor),
+                        ),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: Padding(
+                                padding: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width *
+                                        0.2),
+                                child: Center(
+                                  child: AppTextLarge(
+                                    text: epargne['nom'],
+                                    size: 18,
                                   ),
                                 ),
-                                Spacer(),
-                                AppText(text: "Fin: ${epargne['date_limite']}"),
-                              ],
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      AppText(text: "Objectif :"),
+                                      AppTextLarge(
+                                        text: "\$${epargne['objectif']}",
+                                        size: 18,
+                                      ),
+                                    ],
+                                  ),
+                                  AppText(
+                                      text: "Fin: ${epargne['date_limite']}"),
+                                  AppText(
+                                      text:
+                                          "Fréquence : ${epargne['frequence']}"),
+                                  SizedBox(height: 10),
+                                  AppText(
+                                    text:
+                                        "Montant épargné : \$${totalContributions.toStringAsFixed(2)} / \$${objectif.toStringAsFixed(2)}",
+                                  ),
+                                ],
+                              ),
+                              trailing: Column(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Theme.of(context)
+                                                .highlightColor),
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: IconButton(
+                                      icon: Icon(Icons.edit),
+                                      onPressed: () {
+                                        _showEditEpargneModal(context,
+                                            selectedEpargneId, epargne);
+                                      },
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  AppText(
+                                      text: "Fin: ${epargne['date_limite']}"),
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ContributionListPage(
+                                        epargneId: selectedEpargneId),
+                                  ),
+                                );
+                              },
                             ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ContributionListPage(
-                                      epargneId: selectedEpargneId),
-                                ),
-                              );
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8, bottom: 10),
-                            child: Stack(
-                              children: [
-                                LinearProgressIndicator(
-                                  borderRadius: BorderRadius.circular(8),
-                                  value: progression,
-                                  color: progressColor, // Couleur de la barre
-                                  backgroundColor: Colors.grey[300],
-                                  minHeight: 10,
-                                ),
-                                Positioned(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.25 -
-                                          8,
-                                  top: 0,
-                                  child: _buildMarker(),
-                                ),
-                                Positioned(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.5 -
-                                          8,
-                                  top: 0,
-                                  child: _buildMarker(),
-                                ),
-                                Positioned(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.72 -
-                                          8,
-                                  top: 0,
-                                  child: _buildMarker(),
-                                ),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8.0, right: 8, bottom: 10),
+                              child: Stack(
+                                children: [
+                                  LinearProgressIndicator(
+                                    borderRadius: BorderRadius.circular(8),
+                                    value: progression,
+                                    color: progressColor, // Couleur de la barre
+                                    backgroundColor: Colors.grey[300],
+                                    minHeight: 10,
+                                  ),
+                                  Positioned(
+                                    left: MediaQuery.of(context).size.width *
+                                            0.25 -
+                                        8,
+                                    top: 0,
+                                    child: _buildMarker(),
+                                  ),
+                                  Positioned(
+                                    left: MediaQuery.of(context).size.width *
+                                            0.5 -
+                                        8,
+                                    top: 0,
+                                    child: _buildMarker(),
+                                  ),
+                                  Positioned(
+                                    left: MediaQuery.of(context).size.width *
+                                            0.72 -
+                                        8,
+                                    top: 0,
+                                    child: _buildMarker(),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              },
-            );
+                          ],
+                        ),
+                      );
+                    },
+                  ));
+                }
+              }
+            }
+
+            return ListView(children: content);
           },
         ),
       ),

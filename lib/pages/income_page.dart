@@ -58,7 +58,7 @@ class _IncomePageState extends State<IncomePage> {
                       size: 60,
                     ),
                     sizedbox,
-                    AppText(text: 'Plan d\'Epargnes'),
+                    AppText(text: 'Mes Epargnes'),
                   ],
                 ),
               ),
@@ -68,6 +68,7 @@ class _IncomePageState extends State<IncomePage> {
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
+                  elevation: 20,
                   context: context,
                   isScrollControlled: true,
                   builder: (BuildContext context) {
@@ -101,7 +102,7 @@ class _IncomePageState extends State<IncomePage> {
                       size: 60,
                     ),
                     sizedbox,
-                    AppText(text: 'Plan d\'Epargnes'),
+                    AppText(text: 'Ajout Plan d\'Epargnes'),
                   ],
                 ),
               ),

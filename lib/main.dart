@@ -2,7 +2,6 @@
 
 import 'package:balare/authantification/login_page.dart';
 import 'package:balare/authantification/main_page.dart';
-import 'package:balare/authantification/signup_page.dart';
 import 'package:balare/firebase_options.dart';
 import 'package:balare/intro/Intro.dart';
 import 'package:balare/pages/home_page.dart';

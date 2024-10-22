@@ -44,10 +44,23 @@ class _AddPlanEpargneState extends State<AddPlanEpargne> {
         height: 450,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
+          border: Border.all(color: Theme.of(context).highlightColor),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
+
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context)
+                  .colorScheme
+                  .inverseSurface
+                  .withOpacity(0.4),
+              spreadRadius: 2,
+              blurRadius: 10,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
         child: StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
