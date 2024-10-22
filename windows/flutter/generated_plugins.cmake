@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   firebase_auth
   firebase_core
+  share_plus
   smart_auth
   url_launcher_windows
 )
