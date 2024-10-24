@@ -29,7 +29,6 @@ class AllFunctions {
 
   void dispose() {
     _userIdController.close(); // Fermez le StreamController lorsque vous n'en avez plus besoin
-
   }
 
   static Future<void> addExpense(

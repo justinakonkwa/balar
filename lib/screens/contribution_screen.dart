@@ -91,13 +91,14 @@ class ContributionListPage extends StatelessWidget {
           },
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).colorScheme.inverseSurface,
           shape: CircleBorder(),
           onPressed: () {
             _showContributionModal(context);
           },
           child: Icon(
             Icons.add,
-            color: Theme.of(context).colorScheme.inverseSurface,
+            color: Theme.of(context).colorScheme.background,
           ),
         ));
   }
