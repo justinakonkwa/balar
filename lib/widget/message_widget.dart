@@ -13,7 +13,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 void showCustomSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.inverseSurface,
       content: Row(
         children: [
           Icon(
@@ -29,7 +29,7 @@ void showCustomSnackBar(BuildContext context, String text) {
           ),
         ],
       ),
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 5),
       action: SnackBarAction(
         label: 'Fermer',
         textColor: Colors.white,

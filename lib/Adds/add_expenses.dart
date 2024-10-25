@@ -1,8 +1,10 @@
 import 'package:balare/Modeles/firebase.dart';
+import 'package:balare/screens/history_screen.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/bouton_next.dart';
 import 'package:balare/widget/constantes.dart';
+import 'package:balare/widget/message_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,19 +37,20 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
     // Validation des champs
     if (_categoryController.text.isEmpty) {
       _isSubmitting = false;
-      _showErrorDialog('La catégorie est obligatoire.');
+      // _showErrorDialosg('La catégorie est obligatoire.');
+      showCustomSnackBar(context, "La catégorie est obligatoire.");
       return;
     }
 
     if (_priceController.text.isEmpty) {
       _isSubmitting = false;
-      _showErrorDialog('Le montant est obligatoire.');
+      showCustomSnackBar(context, 'Le montant est obligatoire.');
       return;
     }
 
     if (_selectedDate == null) {
       _isSubmitting = false;
-      _showErrorDialog('La date est obligatoire.');
+      showCustomSnackBar(context, "La date est obligatoire.");
       return;
     }
 
@@ -130,31 +133,46 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
     }
   }
 
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Erreur'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+  title() {
+    if (widget.type == 'incomes') {
+      return AppText(text: 'Historique Révenus');
+    } else if (widget.type == 'expenses') {
+      return AppText(text: 'Historique Dépenses');
+    } else {
+      return AppText(text: 'Historique Dettes');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AppText(text: 'Ajouter une Transaction'),
+        leading: Hero(
+          tag: 'Back',
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HistoriquePage(
+                    type: widget.type,
+                  ),
+                ),
+              );
+            },
+            child: Row(
+              children: [
+                Icon(Icons.arrow_back),
+                SizedBox(
+                  width: 5,
+                ),
+                AppText(text: 'Back'),
+              ],
+            ),
+          ),
+        ),
+        title: title(),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -276,7 +294,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
-                                child: Text(value),
+                                child: AppText(text: value),
                               );
                             }).toList(),
                           ),
@@ -296,8 +314,8 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                   onTap: () {
                     _selectDate(context);
                   },
-                  child: Text(
-                    'Date: ${_selectedDate.toLocal()}'.split(' 0')[0],
+                  child: AppText(
+                    text: 'Date: ${_selectedDate.toLocal()}'.split(' 1')[0],
                   ),
                 ),
                 SizedBox(height: 40),
