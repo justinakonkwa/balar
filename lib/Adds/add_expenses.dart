@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:balare/Modeles/firebase.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
@@ -22,47 +20,98 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   String? _selectedCurrency; // Gérer les devises
-  DateTime? _selectedDate; // Gérer la date
+  DateTime _selectedDate = DateTime.now(); // Date actuelle par défaut
+  bool _isSubmitting = false; // État de soumission
 
   // Méthode pour ajouter une transaction
   Future<void> addTransaction(BuildContext context) async {
+    if (_isSubmitting) return; // Eviter la soumission multiple
+    setState(() {
+      _isSubmitting = true; // Désactiver le bouton
+    });
+
     String userId = (await FirebaseAuth.instance.currentUser)?.uid ?? '';
+
+    // Validation des champs
+    if (_categoryController.text.isEmpty) {
+      _isSubmitting = false;
+      _showErrorDialog('La catégorie est obligatoire.');
+      return;
+    }
+
+    if (_priceController.text.isEmpty) {
+      _isSubmitting = false;
+      _showErrorDialog('Le montant est obligatoire.');
+      return;
+    }
+
+    if (_selectedDate == null) {
+      _isSubmitting = false;
+      _showErrorDialog('La date est obligatoire.');
+      return;
+    }
 
     if (widget.type == null) {
       // Aucune transaction sélectionnée
       return;
     }
 
-    if (widget.type == 'incomes') {
-      await AllFunctions.addIncome(
-        userId,
-        _categoryController.text,
-        double.tryParse(_priceController.text) ?? 0,
-        _descriptionController.text,
-        _selectedCurrency,
-        _selectedDate,
-        context,
+    try {
+      if (widget.type == 'incomes') {
+        await AllFunctions.addIncome(
+          userId,
+          _categoryController.text,
+          double.tryParse(_priceController.text) ?? 0,
+          _descriptionController.text,
+          _selectedCurrency,
+          _selectedDate,
+          context,
+        );
+      } else if (widget.type == 'expenses') {
+        await AllFunctions.addExpense(
+          userId,
+          _categoryController.text,
+          double.tryParse(_priceController.text) ?? 0,
+          _descriptionController.text,
+          _selectedCurrency,
+          _selectedDate,
+          context,
+        );
+      } else if (widget.type == 'debts') {
+        await AllFunctions.addDebt(
+          userId,
+          _categoryController.text,
+          double.tryParse(_priceController.text) ?? 0,
+          _descriptionController.text,
+          _selectedCurrency,
+          _selectedDate,
+          context,
+        );
+      }
+
+      Navigator.pop(context);
+      // Optionnel: Afficher un message de succès ou naviguer
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Transaction ajoutée avec succès!')),
       );
-    } else if (widget.type == 'expenses') {
-      await AllFunctions.addExpense(
-        userId,
-        _categoryController.text,
-        double.tryParse(_priceController.text) ?? 0,
-        _descriptionController.text,
-        _selectedCurrency,
-        _selectedDate,
-        context,
+      Navigator.pop(context);
+      // Réinitialiser les champs si nécessaire
+      _categoryController.clear();
+      _priceController.clear();
+      _descriptionController.clear();
+      setState(() {
+        _selectedCurrency = null; // Réinitialiser la devise
+        _selectedDate = DateTime.now(); // Réinitialiser la date à aujourd'hui
+      });
+    } catch (e) {
+      // Gérer les erreurs, afficher un message d'erreur si nécessaire
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de l\'ajout de la transaction.')),
       );
-    } else if (widget.type == 'debts') {
-      await AllFunctions.addDebt(
-        userId,
-        _categoryController.text,
-        double.tryParse(_priceController.text) ?? 0,
-        _descriptionController.text,
-        _selectedCurrency,
-        _selectedDate,
-        context,
-      );
+    } finally {
+      setState(() {
+        _isSubmitting = false; // Réactiver le bouton
+      });
     }
   }
 
@@ -70,22 +119,42 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: _selectedDate, // Utiliser la date sélectionnée
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
     if (pickedDate != null && pickedDate != _selectedDate) {
       setState(() {
-        _selectedDate = pickedDate;
+        _selectedDate = pickedDate; // Mettre à jour la date
       });
     }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Erreur'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AppText(text:'Ajouter une Transaction'),
+        title: AppText(text: 'Ajouter une Transaction'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -111,7 +180,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                     placeholder: 'Categories',
                     decoration: BoxDecoration(
                       color: Theme.of(context).highlightColor,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                   ),
                 ),
@@ -132,7 +201,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                     placeholder: 'Description',
                     decoration: BoxDecoration(
                       color: Theme.of(context).highlightColor,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     maxLines: 4,
                   ),
@@ -154,7 +223,9 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                           height: 50,
                           width: MediaQuery.of(context).size.width * 0.6,
                           child: CupertinoTextField(
-                            padding: EdgeInsets.only(left: 20,),
+                            padding: EdgeInsets.only(
+                              left: 20,
+                            ),
                             controller: _priceController,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
@@ -164,17 +235,12 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                             placeholder: 'Montant',
                             decoration: BoxDecoration(
                               color: Theme.of(context).highlightColor,
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            suffix:
-
-
-
-                            Padding(
-                              padding:  EdgeInsets.only(right: 20.0),
+                            suffix: Padding(
+                              padding: EdgeInsets.only(right: 20.0),
                               child: Icon(Icons.money),
                             ),
-
                           ),
                         ),
                       ],
@@ -191,11 +257,12 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                           height: 50,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(15),
                             color: Theme.of(context).highlightColor,
                           ),
                           width: MediaQuery.of(context).size.width * 0.27,
                           child: DropdownButton<String>(
+                            underline: SizedBox(),
                             value: _selectedCurrency,
                             hint: AppText(text: 'Devise'),
                             onChanged: (String? newValue) {
@@ -230,19 +297,21 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                     _selectDate(context);
                   },
                   child: Text(
-                    _selectedDate == null
-                        ? 'Sélectionner la Date'
-                        : 'Date: le ' +
-                            'Date: ${_selectedDate!.toLocal()}'.split(' ')[1],
+                    'Date: ${_selectedDate.toLocal()}'.split(' 0')[0],
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 40),
                 NextButton(
                   onTap: () {
                     addTransaction(
                         context); // Appeler la méthode pour ajouter une transaction
                   },
-                  child: AppText(text: 'Ajouter ${widget.type.capitalizeFirst}',color: Theme.of(context).colorScheme.surface,),
+                  child: _isSubmitting
+                      ? CupertinoActivityIndicator()
+                      : AppText(
+                          text: 'Ajouter ${widget.type.capitalizeFirst}',
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
                 ),
               ],
             ],

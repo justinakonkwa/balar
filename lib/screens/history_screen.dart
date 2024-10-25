@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:balare/Adds/add_expenses.dart';
 import 'package:balare/Modeles/firebase.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
@@ -22,7 +23,7 @@ class HistoriquePage extends StatefulWidget {
 class _HistoriquePageState extends State<HistoriquePage> {
   final dateFormat = DateFormat('dd/MM/yyyy');
   DateTime? selectedDate;
-  String selectedPeriod = 'Jour'; // Période sélectionnée pour le filtre
+  String selectedPeriod = "Aujourd'hui"; // Période sélectionnée pour le filtre
   Map<DateTime, List<Map<String, dynamic>>> groupedTransactions = {};
 
   @override
@@ -35,7 +36,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
       List<Map<String, dynamic>> transactions, DateTime? date) async {
     final pdf = pw.Document();
     final title = date != null
-        ? "Transactions du ${DateFormat('dd/MM/yyyy').format(date)}"
+        ? "Transactions du $selectedPeriod"
         : "Historique complet des transactions";
 
     pdf.addPage(
@@ -84,7 +85,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
 
     final output = await getTemporaryDirectory();
     final file = File(
-        "${output.path}/transactions_${date != null ? DateFormat('ddMMyyyy').format(date) : 'historique_complet'}.pdf");
+        "${output.path}/transactions_$selectedPeriod : 'historique_complet'}.pdf");
     await file.writeAsBytes(await pdf.save());
 
     final xFile = XFile(file.path);
@@ -106,7 +107,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
       }
 
       switch (selectedPeriod) {
-        case 'Jour':
+        case "Aujourd'hui":
           return transactionDate.day == now.day &&
               transactionDate.month == now.month &&
               transactionDate.year == now.year;
@@ -141,13 +142,26 @@ class _HistoriquePageState extends State<HistoriquePage> {
                 selectedPeriod = newValue!;
               });
             },
-            items: <String>['Jour', 'Semaine', 'Mois', 'Année']
+            items: <String>["Aujourd'hui", 'Semaine', 'Mois', 'Année']
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
               );
             }).toList(),
+            underline: SizedBox(),
+            icon: Container(
+              margin: const EdgeInsets.only(
+                  right: 10.0), // Espace autour de l'icône
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey), // Bordure
+                borderRadius: BorderRadius.circular(5.0), // Coins arrondis
+              ),
+              child: Icon(
+                Icons.arrow_drop_down, // L'icône que vous souhaitez afficher
+                // Taille de l'icône (agrandi)
+              ),
+            ),
           ),
         ],
       ),
@@ -392,6 +406,20 @@ class _HistoriquePageState extends State<HistoriquePage> {
             );
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+        shape: CircleBorder(),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TransactionFormPage(
+                  type: widget.type), // Passer le type de transaction
+            ),
+          );
+        },
+        child: const Icon(Icons.add), // Utilisation d'une icône "Add"
       ),
     );
   }
