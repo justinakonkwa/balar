@@ -252,17 +252,74 @@ class _HomePageState extends State<HomePage> {
       stream: _zipStreams(revenueStream, expenseStream, debtStream),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: Container(
-              margin:
-                  EdgeInsets.only(top: 5, bottom: 5, right: 10.0, left: 10.0),
-              padding: EdgeInsets.all(5),
-              height: 150,
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Theme.of(context).highlightColor,
-              ),
+          return Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(top: 5, bottom: 5, right: 10.0, left: 10.0),
+            padding: EdgeInsets.all(5),
+            height: 150,
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Theme.of(context).highlightColor,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                          top: 5, bottom: 5, right: 10.0, left: 10.0),
+                      padding: EdgeInsets.all(5),
+                      height: 40.0,
+                      width: 40.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).highlightColor,
+                      ),
+                    ),
+                    sizedbox2,
+                    Container(
+                      margin: EdgeInsets.only(
+                          top: 5, bottom: 5, right: 10.0, left: 10.0),
+                      padding: EdgeInsets.all(5),
+                      height: 10,
+                      width: 280.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Theme.of(context).highlightColor,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 15, right: 10.0, left: 10.0),
+                      padding: EdgeInsets.all(5),
+                      height: 40.0,
+                      width: 40.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).highlightColor,
+                      ),
+                    ),
+                    sizedbox2,
+                    Container(
+                      margin: EdgeInsets.only(top: 15, right: 10.0, left: 10.0),
+                      padding: EdgeInsets.all(5),
+                      height: 10,
+                      width: 280.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Theme.of(context).highlightColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           );
         }

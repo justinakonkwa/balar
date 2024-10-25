@@ -5,7 +5,6 @@ import 'package:balare/pages/home_page.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/constantes.dart';
-import 'package:balare/widget/lign.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,8 @@ class HistoriquePage extends StatefulWidget {
 class _HistoriquePageState extends State<HistoriquePage> {
   final dateFormat = DateFormat('dd/MM/yyyy');
   DateTime? selectedDate;
-  String selectedPeriod = "Aujourd'hui"; // Période sélectionnée pour le filtre
+  String selectedPeriod = "Aujourd'hui";
+  bool isLoanding = false;
   Map<DateTime, List<Map<String, dynamic>>> groupedTransactions = {};
 
   @override
@@ -39,6 +39,9 @@ class _HistoriquePageState extends State<HistoriquePage> {
   Future<void> generatePdfAndShare(
       List<Map<String, dynamic>> transactions, DateTime? date) async {
     final pdf = pw.Document();
+    setState(() {
+      isLoanding = true;
+    });
     final title = date != null
         ? "Transactions du $selectedPeriod"
         : "Historique complet des transactions";
@@ -94,6 +97,9 @@ class _HistoriquePageState extends State<HistoriquePage> {
 
     final xFile = XFile(file.path);
     Share.shareXFiles([xFile], text: title);
+    setState(() {
+      isLoanding = false;
+    });
   }
 
   // Fonction pour filtrer les transactions par période sélectionnée
@@ -151,12 +157,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
           tag: "Back2",
           child: GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomePage(),
-                ),
-              );
+              Navigator.of(context).pop();
             },
             child: Row(
               children: [
@@ -169,31 +170,34 @@ class _HistoriquePageState extends State<HistoriquePage> {
         title: title(),
         centerTitle: true,
         actions: [
-          DropdownButton<String>(
-            value: selectedPeriod,
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedPeriod = newValue!;
-              });
-            },
-            items: <String>["Aujourd'hui", 'Semaine', 'Mois', 'Année']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            underline: SizedBox(),
-            icon: Container(
-              margin: const EdgeInsets.only(
-                  right: 10.0), // Espace autour de l'icône
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey), // Bordure
-                borderRadius: BorderRadius.circular(5.0), // Coins arrondis
-              ),
-              child: Icon(
-                Icons.arrow_drop_down, // L'icône que vous souhaitez afficher
-                // Taille de l'icône (agrandi)
+          Container(
+            child: DropdownButton<String>(
+              borderRadius: BorderRadius.circular(20),
+              value: selectedPeriod,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedPeriod = newValue!;
+                });
+              },
+              items: <String>["Aujourd'hui", 'Semaine', 'Mois', 'Année']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              underline: SizedBox(),
+              icon: Container(
+                margin: const EdgeInsets.only(
+                    right: 10.0), // Espace autour de l'icône
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey), // Bordure
+                  borderRadius: BorderRadius.circular(5.0), // Coins arrondis
+                ),
+                child: Icon(
+                  Icons.arrow_drop_down, // L'icône que vous souhaitez afficher
+                  // Taille de l'icône (agrandi)
+                ),
               ),
             ),
           ),
@@ -474,9 +478,13 @@ class _HistoriquePageState extends State<HistoriquePage> {
                               );
                             }
                           },
-                          child: const Icon(
-                            CupertinoIcons.share,
-                          ),
+                          child: isLoanding
+                              ? CupertinoActivityIndicator(
+                                  color: Theme.of(context).colorScheme.primary,
+                                )
+                              : Icon(
+                                  CupertinoIcons.share,
+                                ),
                         ),
                         SizedBox(
                           height: 80,

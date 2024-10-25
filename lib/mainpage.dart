@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:balare/pages/chat.dart';
 import 'package:balare/pages/home_page.dart';
 import 'package:balare/pages/income_page.dart';
 import 'package:balare/pages/user_page.dart';
@@ -20,7 +21,7 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    IncomePage(),
+    ChatPage(),
     SettingsPage(),
   ];
 
