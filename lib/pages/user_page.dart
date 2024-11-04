@@ -357,7 +357,7 @@ class _SettingsPageState extends State<SettingsPage> {
       await FirebaseAuth.instance.signOut();
 
       // Rediriger l'utilisateur
-      Navigator.pushReplacementNamed(context, '/intro');
+      Navigator.pushReplacementNamed(context, '/auth');
     } catch (e) {
       print('Erreur pendant la déconnexion ou la mise à jour du token : $e');
       // Afficher un message d'erreur à l'utilisateur

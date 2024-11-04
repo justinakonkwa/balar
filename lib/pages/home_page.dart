@@ -285,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                           top: 5, bottom: 5, right: 10.0, left: 10.0),
                       padding: EdgeInsets.all(5),
                       height: 10,
-                      width: 280.0,
+                      width: MediaQuery.of(context).size.width * 0.65,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Theme.of(context).highlightColor,
@@ -311,7 +311,7 @@ class _HomePageState extends State<HomePage> {
                       margin: EdgeInsets.only(top: 15, right: 10.0, left: 10.0),
                       padding: EdgeInsets.all(5),
                       height: 10,
-                      width: 280.0,
+                      width:MediaQuery.of(context).size.width * 0.65,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Theme.of(context).highlightColor,

@@ -1,5 +1,7 @@
+import 'package:balare/authantification/login_page.dart';
 import 'package:balare/intro/Intro.dart';
 import 'package:balare/mainpage.dart';
+import 'package:balare/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +22,7 @@ class _AuthVerificationState extends State<AuthVerification> {
           if (snapshot.hasData) {
             return const MainPage();
           } else {
-            return const Intro();
+            return const LoginPage();
           }
         }),
       ),
