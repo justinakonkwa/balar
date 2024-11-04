@@ -41,7 +41,7 @@ class _ChatPageState extends State<ChatPage> {
             children: [
               AppText(
                 text:
-                "Pour toute question, veuillez nous joindre sur WhatsApp en cliquant sur le bouton ci-dessous !",
+                "De questions sur l'argent? Nous avons des reponses !",
                 textAlign: TextAlign.center,
               ),
               sizedbox,
@@ -78,9 +78,6 @@ class _ChatPageState extends State<ChatPage> {
                         Icons.phone,
                         size: 60,
                       ),
-                      sizedbox,
-                      AppText(text: 'Service Clients'),
-                      AppText(text: 'WhatsApp'),
                     ],
                   ),
                 ),

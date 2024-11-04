@@ -49,9 +49,9 @@ class _MainPageState extends State<MainPage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                CupertinoIcons.cart,
+                CupertinoIcons.chat_bubble_2,
               ),
-              label: ('Income'),
+              label: ('Chat'),
             ),
             BottomNavigationBarItem(
               icon: Icon(
