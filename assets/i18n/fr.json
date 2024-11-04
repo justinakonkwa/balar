@@ -75,8 +75,9 @@
     "loading": "Chargement..."
   },
 
-  "Chat": {
-    "text": "De questions sur l'argent? Nous avons des reponses !"
+  "chat": {
+    "title_1" : "Discussion",
+    "title_2": "De questions sur l'argent? Nous avons des reponses !"
 
   },
 

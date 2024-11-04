@@ -2,6 +2,7 @@ import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/constantes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChatPage extends StatefulWidget {
@@ -31,7 +32,9 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: AppText(text: 'Chat'),
+        title: AppText(
+          text: translate("chat.title_1"),
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -41,7 +44,7 @@ class _ChatPageState extends State<ChatPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AppText(
-                text: "De questions sur l'argent? Nous avons des reponses !",
+                text: translate("chat.title_2"),
                 textAlign: TextAlign.center,
               ),
               sizedbox,
