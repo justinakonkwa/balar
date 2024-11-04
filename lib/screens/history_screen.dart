@@ -9,6 +9,7 @@ import 'package:balare/widget/constantes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
@@ -142,11 +143,11 @@ class _HistoriquePageState extends State<HistoriquePage> {
 
   title() {
     if (widget.type == 'incomes') {
-      return AppText(text: 'Révenus');
+      return AppText(text: translate("title.title_1"));
     } else if (widget.type == 'expenses') {
-      return AppText(text: 'Dépenses');
+      return AppText(text: translate("title.title_2"));
     } else {
-      return AppText(text: 'Dettes');
+      return AppText(text: translate("title.title_3"));
     }
   }
 
@@ -182,8 +183,12 @@ class _HistoriquePageState extends State<HistoriquePage> {
                   selectedPeriod = newValue!;
                 });
               },
-              items: <String>["Aujourd'hui", 'Semaine', 'Mois', 'Année']
-                  .map<DropdownMenuItem<String>>((String value) {
+              items: <String>[
+                translate("homepage.homepage_1"),
+                translate("homepage.homepage_5"),
+                translate("homepage.homepage_6"),
+                translate("homepage.homepage_7"),
+              ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
@@ -217,7 +222,9 @@ class _HistoriquePageState extends State<HistoriquePage> {
                   AppText(text: 'Erreur lors de la récupération des données'),
             );
           } else if (!snapshot.hasData) {
-            return const Center(child: Text('Aucun utilisateur connecté.'));
+            return Center(
+              child: AppText(text: 'Aucun utilisateur connecté.'),
+            );
           } else {
             String userId = snapshot.data!;
             return StreamBuilder<List<Map<String, dynamic>>>(
@@ -255,13 +262,12 @@ class _HistoriquePageState extends State<HistoriquePage> {
                             child: Icon(Icons.info, size: 40)),
                         SizedBox(height: 10),
                         AppTextLarge(
-                          text: "Aucune donnée disponible",
+                          text: translate("no_data.text_1"),
                           size: 16,
                         ),
                         SizedBox(height: 10),
                         AppText(
-                          text:
-                              "Lorsque vous ajoutez une nouvelle donnée, elle apparaîtra ici.",
+                          text: translate("no_data.text_2"),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -304,7 +310,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                           bottomLeft: Radius.circular(10),
                                         ),
                                       ),
-                                      child: Text('N°'),
+                                      child: AppText(text: 'N°'),
                                     ),
                                     TableCell(
                                       child: Container(
@@ -312,7 +318,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                         height: 50,
                                         color: Theme.of(context).highlightColor,
                                         child: AppTextLarge(
-                                          text: 'Catégorie',
+                                          text: translate("form.category"),
                                           size: 14,
                                         ),
                                       ),
@@ -323,7 +329,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                         height: 50,
                                         color: Theme.of(context).highlightColor,
                                         child: AppTextLarge(
-                                          text: 'Description',
+                                          text: translate("form.description"),
                                           size: 14,
                                         ),
                                       ),
@@ -334,7 +340,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                         height: 50,
                                         color: Theme.of(context).highlightColor,
                                         child: AppTextLarge(
-                                          text: 'Montant',
+                                          text: translate("form.montant"),
                                           size: 14,
                                         ),
                                       ),
@@ -352,7 +358,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                                           ),
                                         ),
                                         child: AppTextLarge(
-                                          text: 'Date',
+                                          text: translate("form.date"),
                                           size: 14,
                                         ),
                                       ),

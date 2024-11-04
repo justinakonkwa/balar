@@ -14,7 +14,10 @@
     "homepage_1": "Aujourd'hui",
     "homepage_2": "Hier",
     "homepage_3": "Ce mois-ci",
-    "homepage_4": "Mois passé"
+    "homepage_4": "Mois passé" ,
+    "homepage_5": "Semaine" ,
+    "homepage_6": "Mois" ,
+    "homepage_7": "Année"
   },
 
   "button": {
@@ -27,7 +30,7 @@
   },
 
   "form": {
-    "categogy": "Categorie",
+    "category": "Categorie",
     "description": "Déscription",
     "montant": "Montant",
     "devise": "Devise",
