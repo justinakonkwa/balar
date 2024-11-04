@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
-
 void showCustomSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
@@ -90,32 +89,7 @@ Future<void> showMessageDialog(BuildContext context,
                           height: 30,
                           color: Theme.of(context).colorScheme.primary,
                           child: MaterialButton(
-                            onPressed: () async {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => StoragePages(),
-                              //   ),
-                              // );
-                              User? user = FirebaseAuth.instance.currentUser;
-                              if (user != null) {
-                                String currentUserID = user.uid;
-
-                                return FirebaseFirestore.instance
-                                    .collection('users')
-                                    .doc(currentUserID)
-                                    .collection('stock')
-                                    .doc(productId)
-                                    .delete()
-                                    .then(
-                                      (value) => showCustomSnackBar(context,
-                                          'le produit a été supprimer'),
-                                    )
-                                    .catchError(
-                                      (error) => print('erreur de suprression'),
-                                    );
-                              }
-                            },
+                            onPressed: () async {},
                             child:
                                 AppText(text: 'Confirmer', color: Colors.white),
                           ),

@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:balare/Modeles/firebase/user_service.dart';
 import 'package:balare/config/utils.dart';
 import 'package:balare/language/choose_language.dart';
 import 'package:balare/theme/theme_provider.dart';
@@ -337,7 +338,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
               ),
               child: myCard(context, ontap: () {
-                settingsService.signOut();
+                settingsService.signOut(context);
               }, icon: Icons.exit_to_app, title: 'Sign Out', showLast: true),
             )
           ],
@@ -384,114 +385,3 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 }
 
-class SettingsService {
-  final BuildContext context;
-  final TextEditingController nameController;
-  final TextEditingController phoneController;
-  File? _profileImage; // Variable pour le fichier d'image local
-  String?
-      _profileImageUrl; // Variable pour stocker l'URL de l'image téléchargée
-
-  SettingsService({
-    required this.context,
-    required this.nameController,
-    required this.phoneController,
-  });
-
-  // Fonction pour récupérer les données de l'utilisateur depuis Firestore
-  Future<void> fetchUserData() async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-
-    try {
-      DocumentSnapshot userDoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-
-      if (userDoc.exists) {
-        nameController.text = userDoc['name'] ?? '';
-        phoneController.text = userDoc['phoneNumber'] ?? '';
-        _profileImageUrl = userDoc['photo']; // Si vous voulez utiliser l'URL
-      }
-    } catch (e) {
-      // Gestion des erreurs
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Erreur lors de la récupération des données : $e')),
-      );
-    }
-  }
-
-  Future<void> uploadProfileImage(String uid) async {
-    try {
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('user_profiles')
-          .child('$uid.jpg');
-
-      if (_profileImage != null) {
-        await ref.putFile(_profileImage!);
-        _profileImageUrl = await ref.getDownloadURL();
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Erreur lors du téléchargement de l\'image : $e')),
-      );
-    }
-  }
-
-  Future<void> saveChanges() async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-
-    if (_profileImage != null) {
-      await uploadProfileImage(uid);
-    }
-
-    try {
-      await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'name': nameController.text,
-        'phoneNumber': phoneController.text,
-        'photo': _profileImageUrl, // Utilisez _profileImageUrl ici
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Modifications enregistrées avec succès')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur lors de l\'enregistrement : $e')),
-      );
-    }
-  }
-
-  Future<void> signOut() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        final String uid = user.uid;
-
-        await FirebaseFirestore.instance.collection('users').doc(uid).update({
-          'fcmToken': '',
-        });
-
-        await FirebaseAuth.instance.signOut();
-        Navigator.pushReplacementNamed(context, '/auth');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur lors de la déconnexion : $e')),
-      );
-    }
-  }
-
-  Future<void> pickImage(
-      ImageSource source, Function(File) onImagePicked) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: source);
-
-    if (pickedFile != null) {
-      File imageFile = File(pickedFile.path);
-      onImagePicked(
-          imageFile); // Passer le fichier d'image à la fonction de rappel
-    }
-  }
-}
