@@ -75,8 +75,9 @@ class _HomePageState extends State<HomePage> {
 
         if (snapshot.hasError || !snapshot.hasData) {
           return Center(
-              child: Text(
-                  'Erreur lors de la récupération de l\'ID de l\'utilisateur'),);
+            child: Text(
+                'Erreur lors de la récupération de l\'ID de l\'utilisateur'),
+          );
         }
 
         final userId = snapshot.data!;

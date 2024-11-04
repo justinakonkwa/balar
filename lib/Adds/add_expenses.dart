@@ -8,6 +8,7 @@ import 'package:balare/widget/message_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class TransactionFormPage extends StatefulWidget {
   final String type;
@@ -135,11 +136,11 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
 
   title() {
     if (widget.type == 'incomes') {
-      return AppText(text: 'Révenus');
+      return AppText(text: translate("title.title_1"));
     } else if (widget.type == 'expenses') {
-      return AppText(text: 'Dépenses');
+      return AppText(text: translate("title.title_2"));
     } else {
-      return AppText(text: 'Dettes');
+      return AppText(text: translate("title.title_3"));
     }
   }
 
@@ -183,7 +184,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
               SizedBox(height: 20),
               if (widget.type != null) ...[
                 AppTextLarge(
-                  text: 'Categories',
+                  text: translate("form.category"),
                   size: 18,
                 ),
                 sizedbox,
@@ -195,7 +196,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                         fontFamily: 'Montserrat',
                         color: Theme.of(context).colorScheme.onBackground),
                     keyboardType: TextInputType.name,
-                    placeholder: 'Categories',
+                    placeholder: translate("form.category"),
                     decoration: BoxDecoration(
                       color: Theme.of(context).highlightColor,
                       borderRadius: BorderRadius.circular(15),
@@ -205,7 +206,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                 sizedbox,
                 sizedbox,
                 AppTextLarge(
-                  text: 'Description',
+                  text: translate("form.description"),
                   size: 18,
                 ),
                 sizedbox,
@@ -216,7 +217,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                         fontFamily: 'Montserrat',
                         color: Theme.of(context).colorScheme.onBackground),
                     keyboardType: TextInputType.name,
-                    placeholder: 'Description',
+                    placeholder: translate("form.description"),
                     decoration: BoxDecoration(
                       color: Theme.of(context).highlightColor,
                       borderRadius: BorderRadius.circular(15),
@@ -233,7 +234,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppTextLarge(
-                          text: 'Montant',
+                          text: translate("form.montant"),
                           size: 18,
                         ),
                         sizedbox,
@@ -250,7 +251,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                                 color:
                                     Theme.of(context).colorScheme.onBackground),
                             keyboardType: TextInputType.number,
-                            placeholder: 'Montant',
+                            placeholder: translate("form.montant"),
                             decoration: BoxDecoration(
                               color: Theme.of(context).highlightColor,
                               borderRadius: BorderRadius.circular(15),
@@ -267,7 +268,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppTextLarge(
-                          text: 'Devise',
+                          text: translate("form.devise"),
                           size: 18,
                         ),
                         sizedbox,
@@ -282,7 +283,9 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                           child: DropdownButton<String>(
                             underline: SizedBox(),
                             value: _selectedCurrency,
-                            hint: AppText(text: 'Devise'),
+                            hint: AppText(
+                              text: translate("form.devise"),
+                            ),
                             onChanged: (String? newValue) {
                               setState(() {
                                 _selectedCurrency = newValue;
@@ -305,7 +308,7 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                 ),
                 SizedBox(height: 20),
                 AppTextLarge(
-                  text: 'Date',
+                  text: translate("form.]date"),
                   size: 18,
                 ),
                 sizedbox,
@@ -321,13 +324,12 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
                 SizedBox(height: 40),
                 NextButton(
                   onTap: () {
-                    addTransaction(
-                        context); // Appeler la méthode pour ajouter une transaction
+                    addTransaction(context);
                   },
                   child: _isSubmitting
                       ? CupertinoActivityIndicator()
                       : AppText(
-                          text: 'Ajouter ${widget.type.capitalizeFirst}',
+                          text: translate("form.add"),
                           color: Theme.of(context).colorScheme.surface,
                         ),
                 ),
