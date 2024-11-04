@@ -1,4 +1,4 @@
-// Widget de clavier personnalisé
+import 'package:balare/widget/app_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomKeyboard extends StatelessWidget {
@@ -29,8 +29,9 @@ class CustomKeyboard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildKey('0', context),
-              _buildKey('X', context,
-                  onTap: onBackspace), // Touche retour arrière
+              _buildKey('', context,
+                  onTap: onBackspace,
+                  isBackspace: true), // Touche retour arrière avec icône
             ],
           ),
         ],
@@ -40,11 +41,13 @@ class CustomKeyboard extends StatelessWidget {
 
   Widget _buildKeyboardRow(List<String> keys, BuildContext context) {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: keys.map((key) => _buildKey(key, context)).toList());
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: keys.map((key) => _buildKey(key, context)).toList(),
+    );
   }
 
-  Widget _buildKey(String value, BuildContext context, {VoidCallback? onTap}) {
+  Widget _buildKey(String value, BuildContext context,
+      {VoidCallback? onTap, bool isBackspace = false}) {
     return GestureDetector(
       onTap: onTap ?? () => _textInputHandler(value),
       child: Container(
@@ -53,13 +56,19 @@ class CustomKeyboard extends StatelessWidget {
         height: 60,
         alignment: Alignment.center,
         decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
           border: Border.all(color: Theme.of(context).highlightColor),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Text(
-          value,
-          style: TextStyle(fontSize: 20),
-        ),
+        child: isBackspace
+            ? Icon(Icons.backspace,
+                size: 24,
+                color: Theme.of(context)
+                    .colorScheme
+                    .error) // Icône pour retour arrière
+            : AppText(
+                text: value,
+              ),
       ),
     );
   }
