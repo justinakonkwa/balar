@@ -1,4 +1,4 @@
-import 'package:balare/Modeles/firebase.dart';
+import 'package:balare/Modeles/firebase/add_transaction.dart';
 import 'package:balare/Modeles/firebase/transaction_service.dart';
 import 'package:balare/screens/history_screen.dart';
 import 'package:balare/widget/app_text.dart';

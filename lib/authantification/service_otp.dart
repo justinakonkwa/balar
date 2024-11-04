@@ -91,6 +91,7 @@ class _VerificationOTPPageState extends State<VerificationOTPPage> {
           left: 20,
           right: 20,
           bottom: 20,
+          top: 20,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:balare/Adds/add_expenses.dart';
-import 'package:balare/Modeles/firebase.dart';
+import 'package:balare/Modeles/firebase/add_transaction.dart';
 import 'package:balare/pages/home_page.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
