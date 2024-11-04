@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SettingsService {
@@ -39,7 +40,9 @@ class SettingsService {
       // Gestion des erreurs
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text('Erreur lors de la récupération des données : $e')),
+          content:
+              AppText(text: 'Erreur lors de la récupération des données : $e'),
+        ),
       );
     }
   }
@@ -59,7 +62,9 @@ class SettingsService {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text('Erreur lors du téléchargement de l\'image : $e')),
+          content:
+              AppText(text: 'Erreur lors du téléchargement de l\'image : $e'),
+        ),
       );
     }
   }
@@ -81,11 +86,17 @@ class SettingsService {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Modifications enregistrées avec succès')),
+        SnackBar(
+          content: AppText(
+            text: translate("message.succes_modif"),
+          ),
+        ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur lors de l\'enregistrement : $e')),
+        SnackBar(
+          content: AppText(text: 'Erreur lors de l\'enregistrement : $e'),
+        ),
       );
     }
   }
@@ -100,7 +111,7 @@ class SettingsService {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur lors de la déconnexion : $e')),
+        SnackBar(content: AppText(text: "${translate("logout.error")} $e")),
       );
     }
   }
@@ -110,12 +121,16 @@ class SettingsService {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Déconnexion'),
-          content: Text('Êtes-vous sûr de vouloir vous déconnecter ?'),
+          title: AppText(
+            text: translate("settings.logout"),
+          ),
+          content: AppText(
+            text: translate("settings.title"),
+          ),
           actions: [
             TextButton(
               child: AppText(
-                  text: 'Annuler',
+                  text: translate("logout.cancel"),
                   color: Theme.of(context).colorScheme.inverseSurface),
               onPressed: () {
                 Navigator.of(context).pop(); // Fermer le dialog
@@ -123,7 +138,7 @@ class SettingsService {
             ),
             TextButton(
               child: AppText(
-                text: 'Déconnexion',
+                text: translate("settings.logout"),
                 color: Theme.of(context).colorScheme.error,
               ),
               onPressed: () async {
@@ -135,9 +150,11 @@ class SettingsService {
                     await FirebaseFirestore.instance
                         .collection('users')
                         .doc(uid)
-                        .update({
-                      'fcmToken': '',
-                    });
+                        .update(
+                      {
+                        'fcmToken': '',
+                      },
+                    );
 
                     // Déconnexion
                     await FirebaseAuth.instance.signOut();
@@ -146,7 +163,8 @@ class SettingsService {
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                        content: Text('Erreur lors de la déconnexion : $e')),
+                        content:
+                            AppText(text: "${translate("logout.error")} $e")),
                   );
                 } finally {
                   Navigator.of(context)

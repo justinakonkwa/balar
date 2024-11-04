@@ -1,4 +1,3 @@
-
 // import 'package:flutter/cupertino.dart';
 import 'package:balare/language/language_preferences.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +7,7 @@ void showI18nDialog({required BuildContext context}) {
   showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-
-            title: Text(translate('language.selection.title')),
+            title: Text(translate('language.message')),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -30,10 +28,7 @@ void showI18nDialog({required BuildContext context}) {
               ],
             ),
             actions: [],
-          )
-    ).then((String? value) {
-      if (value != null) changeLocale(context, value);
+          )).then((String? value) {
+    if (value != null) changeLocale(context, value);
   });
 }
-
-

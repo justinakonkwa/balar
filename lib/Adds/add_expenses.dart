@@ -135,11 +135,11 @@ class _TransactionFormPageState extends State<TransactionFormPage> {
 
   title() {
     if (widget.type == 'incomes') {
-      return AppText(text: 'Historique Révenus');
+      return AppText(text: 'Révenus');
     } else if (widget.type == 'expenses') {
-      return AppText(text: 'Historique Dépenses');
+      return AppText(text: 'Dépenses');
     } else {
-      return AppText(text: 'Historique Dettes');
+      return AppText(text: 'Dettes');
     }
   }
 

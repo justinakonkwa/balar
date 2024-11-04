@@ -69,10 +69,9 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             sizedbox,
             AppText(
-              text: translate("settings.general").toUpperCase(),
+              text: translate("settings.personal_info").toUpperCase(),
               color: Theme.of(context).colorScheme.onBackground,
             ),
-            sizedbox,
             sizedbox,
             Container(
               padding:
@@ -80,7 +79,7 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 120,
               width: double.maxFinite,
               decoration: BoxDecoration(
-                borderRadius: borderRadius,
+                borderRadius: BorderRadius.circular(15),
                 color: Theme.of(context).highlightColor,
               ),
               child: Column(
@@ -212,10 +211,12 @@ class _SettingsPageState extends State<SettingsPage> {
                               icon: Icon(
                                   CupertinoIcons.pencil_ellipsis_rectangle),
                               onPressed: () {
-                                setState(() {
-                                  isEditing =
-                                      !isEditing; // Active/désactive l'édition
-                                });
+                                setState(
+                                  () {
+                                    isEditing =
+                                        !isEditing; // Active/désactive l'édition
+                                  },
+                                );
                               },
                             )
                     ],
@@ -224,15 +225,16 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             SizedBox(height: 15),
-
+            AppText(
+              text: translate("settings.general").toUpperCase(),
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            sizedbox,
             Container(
-              margin: const EdgeInsets.only(
-                top: 8,
-              ),
               decoration: BoxDecoration(
                 color: Theme.of(context).highlightColor,
                 borderRadius: const BorderRadius.all(
-                  Radius.circular(8),
+                  Radius.circular(15),
                 ),
               ),
               child: Column(
@@ -254,11 +256,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       return myCard(
                         context,
                         ontap: () => provider.changeTheme(!theme),
-                        icon: CupertinoIcons.brightness,
+                        icon: theme
+                            ? CupertinoIcons.moon_stars
+                            : CupertinoIcons.brightness,
                         title: theme
                             ? translate('theme.light')
                             : translate('theme.dark'),
-                        icon2: CupertinoIcons.light_max,
+                        icon2: Icons.switch_right_outlined,
                         showLast: true,
                       );
                     },
@@ -266,14 +270,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15.0),
+            AppText(
+              text: translate("settings.support_and_feedback").toUpperCase(),
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            sizedbox,
             Container(
-              margin: const EdgeInsets.only(
-                top: 8,
-              ),
               decoration: BoxDecoration(
                 color: Theme.of(context).highlightColor,
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
               ),
               child: Column(
                 children: [
@@ -290,23 +296,30 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                       icon: Icons.star_half_outlined,
                       title: translate("settings.leaveReview"),
+                      showLast: false),
+                  myCard(context, ontap: () {
+                    var url = Platform.isAndroid
+                        ? 'https://play.google.com/store/apps/details?id=com.wexende.expensexai'
+                        : 'https://apps.apple.com/us/app/money-ai/id6474200248';
+                    myLaunchUrl(url);
+                  },
+                      icon: Icons.share_outlined,
+                      title: translate("settings.leaveReview"),
                       showLast: true),
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            // AppText(
-            //   text: translate("settings.general").toUpperCase(),
-            //   color: Theme.of(context).colorScheme.onBackground,
-            // ),
+            SizedBox(height: 15),
+            AppText(
+              text: translate("settings.app").toUpperCase(),
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            sizedbox,
             Container(
-              margin: const EdgeInsets.only(
-                top: 8,
-              ),
               decoration: BoxDecoration(
                 color: Theme.of(context).highlightColor,
                 borderRadius: const BorderRadius.all(
-                  Radius.circular(8),
+                  Radius.circular(15),
                 ),
               ),
               child: Column(
@@ -335,7 +348,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               decoration: BoxDecoration(
                 color: Theme.of(context).highlightColor,
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
               ),
               child: myCard(context, ontap: () {
                 settingsService.signOut(context);
@@ -377,11 +390,10 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               margin: EdgeInsets.only(left: 60),
               height: 0.5,
-              color: Theme.of(context).colorScheme.secondary,
-            )
+              color: Theme.of(context).highlightColor,
+            ),
         ],
       ),
     );
   }
 }
-

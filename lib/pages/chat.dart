@@ -1,5 +1,6 @@
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/constantes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,7 +15,7 @@ class _ChatPageState extends State<ChatPage> {
   Future<void> openWhatsApp(String phoneNumber, String message) async {
     final String encodedMessage = Uri.encodeComponent(message);
     final Uri whatsappUrl =
-    Uri.parse('whatsapp://send?phone=$phoneNumber&text=$encodedMessage');
+        Uri.parse('whatsapp://send?phone=$phoneNumber&text=$encodedMessage');
 
     bool canOpen = await canLaunchUrl(whatsappUrl);
     if (canOpen) {
@@ -40,8 +41,7 @@ class _ChatPageState extends State<ChatPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AppText(
-                text:
-                "De questions sur l'argent? Nous avons des reponses !",
+                text: "De questions sur l'argent? Nous avons des reponses !",
                 textAlign: TextAlign.center,
               ),
               sizedbox,
@@ -75,7 +75,7 @@ class _ChatPageState extends State<ChatPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.phone,
+                        CupertinoIcons.chat_bubble_2,
                         size: 60,
                       ),
                     ],

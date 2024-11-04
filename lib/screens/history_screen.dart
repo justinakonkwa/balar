@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:balare/Adds/add_expenses.dart';
 import 'package:balare/Modeles/firebase/add_transaction.dart';
+import 'package:balare/mainpage.dart';
 import 'package:balare/pages/home_page.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
@@ -153,18 +154,20 @@ class _HistoriquePageState extends State<HistoriquePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Hero(
-          tag: "Back2",
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Row(
-              children: [
-                Icon(Icons.arrow_back),
-                AppText(text: 'Back'),
-              ],
-            ),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MainPage(),
+              ),
+            );
+          },
+          child: Row(
+            children: [
+              Icon(Icons.arrow_back),
+              AppText(text: 'Back'),
+            ],
           ),
         ),
         title: title(),
@@ -471,9 +474,10 @@ class _HistoriquePageState extends State<HistoriquePage> {
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(selectedDate == null
-                                      ? "Pas de transactions dans l'historique complet."
-                                      : "Aucune transaction pour cette date sélectionnée."),
+                                  content: AppText(
+                                      text: selectedDate == null
+                                          ? "Pas de transactions dans l'historique complet."
+                                          : "Aucune transaction pour cette date sélectionnée."),
                                 ),
                               );
                             }

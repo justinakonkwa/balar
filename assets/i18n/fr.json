@@ -2,30 +2,39 @@
   "get_started": "Commencer",
   "menu": {
     "menu_1": "Acceuil",
-    "menu_2": "Dépenses",
-    "menu_3": "image",
-    "menu_4": "Paramètres"
+    "menu_2": "Discussion",
+    "menu_3": "Profil"
   },
   "title": {
-    "title_1": "Aujourd'hui",
-    "title_2": "Hier",
-    "title_3": "Semaine Passée",
-    "title_4": "Mois Passée",
-    "title_5": "Argent dépensé"
+    "title_1": "Revenus",
+    "title_2": "Dépenses",
+    "title_3": "Dettes"
   },
     "homepage":{
-    "homepage_1": "Recettes du jour",
-    "homepage_2": "capital",
-    "homepage_3": "Produits en stock",
-    "homepage_4": "indicateurs  magasin" 
+    "homepage_1": "Aujourd'hui",
+    "homepage_2": "Hier",
+    "homepage_3": "Ce mois-ci",
+    "homepage_4": "Mois passé"
   },
-  "search_field": {
-    "title": "recherche"
-  },
+
   "button": {
     "cancel": "Annuler",
     "change_language": "Changer de langue"
   },
+  "no_data": {
+    "text_1": "Aucune donnée disponible",
+    "text_2": "Lorsque vous ajoutez une nouvelle donnée, elle apparaîtra ici."
+  },
+
+  "form": {
+    "categogy": "Categorie",
+    "description": "Déscription",
+    "montant": "Montant",
+    "devise": "Devise",
+    "date": "Date",
+    "add": "Ajouter"
+  },
+
   "language": {
     "name": {
       "en": "Anglais",
@@ -41,35 +50,7 @@
       "title": "Sélection de la langue"
     }
   },
-  "plural": {
-    "demo": {
-      "zero": "S'il vous plaît, commencez à appuyer sur le bouton 'plus'.",
-      "one": "Vous avez appuyé sur le bouton une fois.",
-      "two": "Vous avez appuyé deux fois sur le bouton.",
-      "other": "Vous avez appuyé sur le bouton {{value}} fois."
-    }
-  },
-  "paywall": {
-    "title": "AI-Powered Money Assistant",
-    "subtitle": "Suivez sans effort vos dépenses avec notre système basé sur l'IA",
-    "restore": "Restaurer",
-    "restoreTitle": "Restaurer l'abonnement",
-    "terms": "Termes et conditions",
-    "showOffers": "Afficher les Offers",
-    "activeFreeTrial": "Activer l'essai gratuit",
-    "isNone": "Aucun abonnement trouvé",
-    "isMonthly": "abonnement mensuel",
-    "isAnnual": "abonnement annuel",
-    "isMonthlyFree": "essai gratuit mensuel",
-    "isAnnualFree": "essai gratuit annuel",
-    "expireOn": "Expire le ",
-    "tryForFree": "Essayez gratuitement",
-    "isFreeType": "Essai Gratuit",
-    "isNotFree": "Abonnement",
-    "restore_error": "Impossible de restaurer l'abonnement",
-    "restore_success": "Abonnement restauré avec succès",
-    "noActiveSubscription": "Aucun abonnement actif trouvé"
-  },
+
 
   "login": {
     "welcomeMsg": "Welcome to Money AI",
@@ -94,10 +75,16 @@
     "loading": "Chargement..."
   },
 
+  "Chat": {
+    "text": "De questions sur l'argent? Nous avons des reponses !"
+
+  },
+
+
   "settings": {
     "title": "Paramètres",
-    "general": "Général",
-    "personal_info": "Personal Info",
+    "general": "GENERAL",
+    "personal_info": "INFORMATION PERSONNELLE",
     "manage_subscription": "Gérer l'abonnement",
     "language": "Langue",
     "theme": "Thème",
@@ -107,16 +94,28 @@
     "logout_failed": "Échec de la déconnexion",
     "reminders": "Rappels",
 
-    "support_and_feedback": "",
+    "support_and_feedback": "SUPPORT ET COMMENTAIRES",
     "contactUs": "Contactez-nous",
     "leaveReview": "Laisser un avis",
     "shareApp": "Partager l'application",
 
-    "app": "Application",
+    "app": "INFORMATION SUR L'APPLICATION",
     "privacy_policy": "Politique de confidentialité",
     "terms_and_conditions": "Termes et conditions",
     "about": "À propos de",
 
     "Account": "Compte"
-  }
+  },
+
+  "logout": {
+    "logout": "Déconnexion",
+    "title": "Êtes-vous sûr de vouloir vous déconnecter",
+    "cancel": "Annuler",
+    "error" : "Erreur lors de la déconnexion"
+  }  ,
+   "message": {
+     "succes_modif": "Modifications enregistrées avec succès",
+     "erreur": "Erreur lors du téléchargement"
+   }
+
 }
