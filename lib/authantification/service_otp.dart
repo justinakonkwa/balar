@@ -1,7 +1,6 @@
 import 'package:balare/Modeles/user_modele/user_modele.dart';
 import 'package:balare/widget/Keyboard_widget.dart';
 import 'package:balare/widget/app_text.dart';
-import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/bouton_next.dart';
 import 'package:balare/widget/constantes.dart';
 import 'package:balare/widget/message_widget.dart';
@@ -114,7 +113,11 @@ class _VerificationOTPPageState extends State<VerificationOTPPage> {
             sizedbox,
             CustomKeyboard(
               onTextInput: (value) {
-                _otpController.text += value;
+                if (_otpController.text.length < 6) {
+                  setState(() {
+                    _otpController.text += value;
+                  });
+                }
               },
               onBackspace: () {
                 if (_otpController.text.isNotEmpty) {
