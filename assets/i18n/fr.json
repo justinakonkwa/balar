@@ -39,14 +39,13 @@
   },
 
   "language": {
-    "name": {
-      "en": "Anglais",
-      "fr": "Français",
-      "es": "Espagnole",
-      "fa": "Persane",
-      "ar": "Arabe",
-      "ru": "Russe"
-    },
+
+      "fr": "francais",
+      "ln": "lingala",
+      "sw": "shwahili",
+      "tsh": "tshiluba",
+      "kik": "kikongo",
+
     "selected_message": "La langue actuellement sélectionnée est {langue}",
     "selection": {
       "message": "Veuillez sélectionner une langue dans la liste",

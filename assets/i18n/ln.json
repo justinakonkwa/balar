@@ -1,0 +1,106 @@
+{
+  "get_started": "Kobanda",
+  "menu": {
+    "menu_1": "Ndako",
+    "menu_2": "Lisolo",
+    "menu_3": "Profil"
+  },
+  "title": {
+    "title_1": "Mbongo oyo ezali koya",
+    "title_2": "Mbongo oyo esili",
+    "title_3": "Nyongo"
+  },
+  "homepage": {
+    "homepage_1": "Lelo",
+    "homepage_2": "Lobi",
+    "homepage_3": "Sanza oyo",
+    "homepage_4": "Sanza eleki",
+    "homepage_5": "Semaine",
+    "homepage_6": "Mokolo",
+    "homepage_7": "Mbula"
+  },
+  "button": {
+    "cancel": "Kokanga",
+    "change_language": "Kobongola monoko"
+  },
+  "no_data": {
+    "text_1": "Données ezali te",
+    "text_2": "Soki okenisi donnee ya sika, ekomonana awa."
+  },
+  "form": {
+    "category": "Kategori",
+    "description": "Bongiseli",
+    "montant": "Motango",
+    "devise": "Mbongo",
+    "date": "Mokolo",
+    "add": "Kobakisa"
+  },
+  "language": {
+    "fr": "Falansé",
+    "ln": "Lingála",
+    "sw": "Swahili",
+    "tsh": "tshiluba",
+    "kik": "kikongo",
+    "selected_message": "Lilangá oyo oponi sik’oyo ezali {langue}",
+    "selection": {
+      "message": "S’il te plait poná lilanga na kati ya listɛ",
+      "title": "Poná lilanga"
+    }
+  },
+  "login": {
+    "welcomeMsg": "Boyei malamu na Money AI",
+    "subTitle": "Bandela mpe tika AI ebongisa mbongo na yo",
+    "continueWithGoogle": "Kokoba na Google",
+    "continueWithApple": "Kokoba na Apple",
+    "continueWithEmail": "Kokoba na Imeyele",
+    "signupWithEmail": "Komisala na Imeyele",
+    "signin": "Kokota",
+    "signup": "Komisala",
+    "ForgotPassword": "Kobosana mobeko ya kokota",
+    "notHaveAccount": "Ozali na compte te?",
+    "alreadyHaveAccount": "Ozali na compte?",
+    "sendEmail": "Kotinda Imeyele"
+  },
+  "theme": {
+    "ok": "OK",
+    "light": "Pole",
+    "dark": "Molili",
+    "system": "Système",
+    "loading": "Kotonga..."
+  },
+  "chat": {
+    "title_1": "Lisolo",
+    "title_2": "Mituna na mbongo? Tozali na biyano!"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "general": "GENERAL",
+    "personal_info": "MAKAMBO NA YO MOKO",
+    "manage_subscription": "Kotambwisa abonnemɛ",
+    "language": "Monoko",
+    "theme": "Mobongisi",
+    "logout": "Kobima",
+    "logout_message": "Ozali na nse ya kobima?",
+    "logout_success": "Obimi na bosembo",
+    "logout_failed": "Kobima elongi te",
+    "reminders": "Kopesa toli",
+    "support_and_feedback": "SUPPORT NA KOMBOLOLI",
+    "contactUs": "Kotinda biso nsango",
+    "leaveReview": "Kotika likambo",
+    "shareApp": "Kopesa application epayi ya baninga",
+    "app": "MAKAMBO NA APPLICATION",
+    "privacy_policy": "Bongiseli ya sekele",
+    "terms_and_conditions": "Bikomeli na malako",
+    "about": "Likambo ya"
+  },
+  "logout": {
+    "logout": "Kobima",
+    "title": "Ozali na nse ya kobima",
+    "cancel": "Kokanga",
+    "error": "Kobima elongi te"
+  },
+  "message": {
+    "succes_modif": "Bongiseli esili na bosembo",
+    "erreur": "Mbeba na kotinda"
+  }
+}

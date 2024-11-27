@@ -184,10 +184,14 @@ class _HistoriquePageState extends State<HistoriquePage> {
                 });
               },
               items: <String>[
-                translate("homepage.homepage_1"),
-                translate("homepage.homepage_5"),
-                translate("homepage.homepage_6"),
-                translate("homepage.homepage_7"),
+                "Aujourd'hui",
+                "Semaine",
+                "Mois",
+                "Année",
+                // translate("homepage.homepage_1"),
+                // translate("homepage.homepage_5"),
+                // translate("homepage.homepage_6"),
+                // translate("homepage.homepage_7"),
               ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,

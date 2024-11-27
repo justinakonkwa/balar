@@ -1,0 +1,107 @@
+{
+  "get_started": "Tumikila",
+  "menu": {
+    "menu_1": "Dibanza",
+    "menu_2": "Bubikidi",
+    "menu_3": "Tshipalo"
+  },
+  "title": {
+    "title_1": "Ditungo",
+    "title_2": "Bulelela",
+    "title_3": "Mikanda"
+  },
+  "homepage": {
+    "homepage_1": "Lelo",
+    "homepage_2": "Dibuka ya mbote",
+    "homepage_3": "Dibuka dia mosi",
+    "homepage_4": "Dibuka dia kale",
+    "homepage_5": "Sabua",
+    "homepage_6": "Dibuka",
+    "homepage_7": "Mwaka"
+  },
+  "button": {
+    "cancel": "Kanusha",
+    "change_language": "Kabula lulimi"
+  },
+  "no_data": {
+    "text_1": "Tulekeshi diaku divuluishi",
+    "text_2": "Bomba diaku dia sanka, bua kulueja diakwe."
+  },
+  "form": {
+    "category": "Mukoko",
+    "description": "Mulwashi",
+    "montant": "Mbongo",
+    "devise": "Bintambo",
+    "date": "Dituku",
+    "add": "Tumikila"
+  },
+  "language": {
+    "fr": "Lufalansa",
+    "ln": "Lingala",
+    "sw": "Kiswahili",
+    "tsh": "Tshiluba",
+    "kik": "Kikongo",
+    "selected_message": "Ulongo uluse uleja {lulimi}",
+    "selection": {
+      "message": "Baka lulimi luleja",
+      "title": "Kabula lulimi"
+    }
+  },
+  "login": {
+    "welcomeMsg": "Tumikila mu Money AI",
+    "subTitle": "Tumikila yi bulelela dia AI bua kubikila bintu biaku",
+    "continueWithGoogle": "Bikila ne Google",
+    "continueWithApple": "Bikila ne Apple",
+    "continueWithEmail": "Bikila ne Email",
+    "signupWithEmail": "Tumikila ne email",
+    "signin": "Bikila",
+    "signup": "Tumikila",
+    "ForgotPassword": "Dituku diaku dilelelwa?",
+    "notHaveAccount": "Ukena mukanda?",
+    "alreadyHaveAccount": "Ukena mukanda?",
+    "sendEmail": "Tumina email"
+  },
+  "theme": {
+    "ok": "Yebo",
+    "light": "Mwang'a mueshi",
+    "dark": "Mwang'a nshii",
+    "system": "Sisteme",
+    "loading": "Kuleja..."
+  },
+  "chat": {
+    "title_1": "Bubikidi",
+    "title_2": "Uleka diaku diakwe? Ukatuleja!"
+  },
+  "settings": {
+    "title": "Ditungo",
+    "general": "BULELELA BUNENE",
+    "personal_info": "BULELELA BU PERSONAL",
+    "manage_subscription": "Tumikila subscription",
+    "language": "Lulimi",
+    "theme": "Mwang'a mueshi",
+    "logout": "Kanusha",
+    "logout_message": "Uleke nadi bulelela?",
+    "logout_success": "Bukelesa ne mueshi",
+    "logout_failed": "Bukelesa ne nshii",
+    "reminders": "Dikuji",
+    "support_and_feedback": "Ditungo ne Bukabuanyi",
+    "contactUs": "Bikila ne bintu bia betu",
+    "leaveReview": "Beka ditshomo",
+    "shareApp": "Tumina app",
+    "app": "Bulelela bua app",
+    "privacy_policy": "Mukalenga wa ditalala",
+    "terms_and_conditions": "Bulelela ne mikanda",
+    "about": "Kabula",
+    "Account": "Mukanda"
+  },
+  "logout": {
+    "logout": "Kanusha",
+    "title": "Uleke nadi bulelela?",
+    "cancel": "Kanusha",
+    "error": "Mulando mu kanusha"
+  },
+  "message": {
+    "succes_modif": "Ditshomo dileje ne mueshi",
+    "erreur": "Mulando mu kuleja"
+  }
+}

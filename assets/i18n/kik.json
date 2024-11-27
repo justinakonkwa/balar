@@ -1,0 +1,107 @@
+{
+  "get_started": "Tandikila",
+  "menu": {
+    "menu_1": "Nsangu",
+    "menu_2": "Bikuma",
+    "menu_3": "Kimvwama"
+  },
+  "title": {
+    "title_1": "Diboko",
+    "title_2": "Makanda",
+    "title_3": "Mibeko"
+  },
+  "homepage": {
+    "homepage_1": "Nkinsi",
+    "homepage_2": "Kia mfumu",
+    "homepage_3": "Lumbu limo",
+    "homepage_4": "Lumbu lufu",
+    "homepage_5": "Semaine",
+    "homepage_6": "Lumbu",
+    "homepage_7": "Mwaka"
+  },
+  "button": {
+    "cancel": "Leka",
+    "change_language": "Bongola lulendo"
+  },
+  "no_data": {
+    "text_1": "Bansangu me kadi",
+    "text_2": "Tula nsangu ya mbote, mpanzu kutala."
+  },
+  "form": {
+    "category": "Ndambu",
+    "description": "Lukanu",
+    "montant": "Mbongo",
+    "devise": "Binkoko",
+    "date": "Lumbu",
+    "add": "Tula"
+  },
+  "language": {
+    "fr": "Kifalansa",
+    "ln": "Kilingala",
+    "sw": "Kiswahili",
+    "tsh": "Kitshiluba",
+    "kik": "Kikongo",
+    "selected_message": "Lulendo lwoso lwakala {lulendo}",
+    "selection": {
+      "message": "Sola lulendo",
+      "title": "Bongola lulendo"
+    }
+  },
+  "login": {
+    "welcomeMsg": "Tandikila mu Money AI",
+    "subTitle": "Tumikila AI bua kulukisa bikuma biaku",
+    "continueWithGoogle": "Tula ko Google",
+    "continueWithApple": "Tula ko Apple",
+    "continueWithEmail": "Tula ko Email",
+    "signupWithEmail": "Tumikila ko Email",
+    "signin": "Kota",
+    "signup": "Tumikila",
+    "ForgotPassword": "Lumbu luzanguka?",
+    "notHaveAccount": "Fwete konto?",
+    "alreadyHaveAccount": "Fwete konto?",
+    "sendEmail": "Tuma email"
+  },
+  "theme": {
+    "ok": "Yindula",
+    "light": "Kia nsemo",
+    "dark": "Kia ngindu",
+    "system": "Mfumu",
+    "loading": "Kubaka..."
+  },
+  "chat": {
+    "title_1": "Nsangu",
+    "title_2": "Wana bosi nsangu? Tula ko!"
+  },
+  "settings": {
+    "title": "Binkulu",
+    "general": "NSUKAMI N'KIMVULA",
+    "personal_info": "BINKULU BIA MFUMU",
+    "manage_subscription": "Tumikila nsangu",
+    "language": "Lulendo",
+    "theme": "Kia nsemo/ngindu",
+    "logout": "Leka",
+    "logout_message": "Wana beka mvula?",
+    "logout_success": "Mvula mebekwa",
+    "logout_failed": "Mvula mebeki mbote ve",
+    "reminders": "Lutambi",
+    "support_and_feedback": "Tula mvwama ne bukumu",
+    "contactUs": "Tula ko betu",
+    "leaveReview": "Bika nsangu",
+    "shareApp": "Tula mbambu ya App",
+    "app": "Binkulu bia App",
+    "privacy_policy": "Ntalu wa bambuta",
+    "terms_and_conditions": "Binkulu ne mbukamu",
+    "about": "Tula bikuma",
+    "Account": "Kimvwama"
+  },
+  "logout": {
+    "logout": "Leka",
+    "title": "Wana beka mvula?",
+    "cancel": "Leka",
+    "error": "Mbote ve mu kubaka mvula"
+  },
+  "message": {
+    "succes_modif": "Lukanu lwakini mbote",
+    "erreur": "Kibuka mu nsangu"
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "get_started": "Anza",
+  "menu": {
+    "menu_1": "Nyumbani",
+    "menu_2": "Mazungumzo",
+    "menu_3": "Profaili"
+  },
+  "title": {
+    "title_1": "Mapato",
+    "title_2": "Matumizi",
+    "title_3": "Madaiwa"
+  },
+  "homepage": {
+    "homepage_1": "Leo",
+    "homepage_2": "Jana",
+    "homepage_3": "Mwezi huu",
+    "homepage_4": "Mwezi uliopita",
+    "homepage_5": "Wiki",
+    "homepage_6": "Mwezi",
+    "homepage_7": "Mwaka"
+  },
+  "button": {
+    "cancel": "Ghairi",
+    "change_language": "Badilisha lugha"
+  },
+  "no_data": {
+    "text_1": "Hakuna data",
+    "text_2": "Ukiweka data mpya, itaonekana hapa."
+  },
+  "form": {
+    "category": "Kategoria",
+    "description": "Maelezo",
+    "montant": "Kiasi",
+    "devise": "Sarafu",
+    "date": "Tarehe",
+    "add": "Ongeza"
+  },
+
+  "language": {
+
+      "fr": "Kifaransa",
+      "ln": "Lingala",
+      "sw": "Kiswahili",
+      "tsh": "tshiluba",
+      "kik": "kikongo",
+
+    "selected_message": "Lugha unayotumia kwa sasa ni {langue}",
+    "selection": {
+      "message": "Tafadhali chagua lugha kutoka kwenye orodha",
+      "title": "Uchaguzi wa lugha"
+    }
+  },
+
+
+  "login": {
+    "welcomeMsg": "Karibu kwenye Money AI",
+    "subTitle": "Anza na uruhusu AI idhibiti fedha zako",
+    "continueWithGoogle": "Endelea na Google",
+    "continueWithApple": "Endelea na Apple",
+    "continueWithEmail": "Endelea na Barua pepe",
+    "signupWithEmail": "Jiandikishe kwa barua pepe",
+    "signin": "Ingia",
+    "signup": "Jisajili",
+    "ForgotPassword": "Umesahau nenosiri",
+    "notHaveAccount": "Huna akaunti?",
+    "alreadyHaveAccount": "Unayo akaunti tayari?",
+    "sendEmail": "Tuma barua pepe"
+  },
+  "theme": {
+    "ok": "Sawa",
+    "light": "Nuru",
+    "dark": "Giza",
+    "system": "Mfumo",
+    "loading": "Inapakia..."
+  },
+  "chat": {
+    "title_1": "Mazungumzo",
+    "title_2": "Una maswali kuhusu fedha? Tunayo majibu!"
+  },
+  "settings": {
+    "title": "Mipangilio",
+    "general": "JUMLA",
+    "personal_info": "TAARIFA BINAFSI",
+    "manage_subscription": "Dhibiti usajili",
+    "language": "Lugha",
+    "theme": "Mandhari",
+    "logout": "Ondoka",
+    "logout_message": "Una uhakika unataka kuondoka?",
+    "logout_success": "Umeondoka kwa mafanikio",
+    "logout_failed": "Haikuwezekana kutoka",
+    "reminders": "Kumbusho",
+    "support_and_feedback": "USHAURI NA MAONI",
+    "contactUs": "Wasiliana nasi",
+    "leaveReview": "Acha mapitio",
+    "shareApp": "Shiriki programu",
+    "app": "TAARIFA YA PROGRAMU",
+    "privacy_policy": "Sera ya faragha",
+    "terms_and_conditions": "Masharti na vigezo",
+    "about": "Kuhusu"
+  },
+  "logout": {
+    "logout": "Ondoka",
+    "title": "Una uhakika unataka kuondoka",
+    "cancel": "Ghairi",
+    "error": "Kosa wakati wa kutoka"
+  },
+  "message": {
+    "succes_modif": "Marekebisho yamehifadhiwa kwa mafanikio",
+    "erreur": "Hitilafu wakati wa kupakia"
+  }
+}

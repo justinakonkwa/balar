@@ -209,9 +209,11 @@ class _HomePageState extends State<HomePage> {
             icon,
             color: Theme.of(context).colorScheme.inverseSurface,
           ),
-          AppText(
-            text: label,
-            color: Theme.of(context).colorScheme.inverseSurface,
+          Flexible(
+            child: AppText(
+              text: label,
+              color: Theme.of(context).colorScheme.inverseSurface,
+            ),
           ),
         ],
       ),
@@ -364,7 +366,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildTransactionDetail(
-                  'Revenus',
+                  translate("title.title_1"),
                   '\$${totalRevenue.toStringAsFixed(2)}',
                   Colors.green,
                   Icon(
@@ -373,7 +375,7 @@ class _HomePageState extends State<HomePage> {
                   context),
               sizedbox,
               _buildTransactionDetail(
-                  'Dépenses',
+                  translate("title.title_2"),
                   '\$${totalExpenses.toStringAsFixed(2)}',
                   Colors.red,
                   Icon(
@@ -382,7 +384,7 @@ class _HomePageState extends State<HomePage> {
                   context),
               sizedbox,
               _buildTransactionDetail(
-                  'Dettes',
+                  translate("title.title_3"),
                   '\$${totalDebts.toStringAsFixed(2)}',
                   Colors.lightBlueAccent,
                   Icon(
