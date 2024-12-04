@@ -102,28 +102,29 @@ class _HomePageState extends State<HomePage> {
     return SliverAppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Theme.of(context).colorScheme.background,
-      expandedHeight: 180.0,
+      expandedHeight: 160.0,
       floating: false,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
         title: Align(
           alignment: Alignment.bottomLeft,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              AppTextLarge(
-                text: "Balar",
-                size: 30.0,
-                color: Theme.of(context).colorScheme.inverseSurface,
-              ),
+              // AppTextLarge(
+              //   text: "Balar",
+              //   size: 30.0,
+              //   color: Theme.of(context).colorScheme.inverseSurface,
+              // ),
               Icon(
                 Icons.notifications_outlined,
                 color: Theme.of(context).colorScheme.inverseSurface,
+                size: 20,
               )
             ],
           ),
         ),
-        titlePadding: const EdgeInsets.only(left: 15, bottom: 10, right: 15),
+        titlePadding: const EdgeInsets.only(left: 15, right: 15),
         background: Stack(
           children: [
             Container(
@@ -135,14 +136,24 @@ class _HomePageState extends State<HomePage> {
 
                 return Padding(
                   padding: const EdgeInsets.only(left: 0.0, top: 50),
-                  child: Opacity(
-                    opacity: 1.0,
-                    child: Image.asset(
-                      isLightTheme
-                          ? 'assets/logo22.png'
-                          : 'assets/logo21.png', // Change logo based on theme
-                      height: 100,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Opacity(
+                        opacity: 1.0,
+                        child: Image.asset(
+                          isLightTheme
+                              ? 'assets/logo_black.png'
+                              : 'assets/logo_white.png', // Change logo based on theme
+                          height: 100,
+                        ),
+                      ),
+                      AppTextLarge(
+                        text: "Balar",
+                        size: 35.0,
+                        color: Theme.of(context).colorScheme.inverseSurface,
+                      ),
+                    ],
                   ),
                 );
               },

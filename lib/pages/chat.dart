@@ -52,7 +52,7 @@ class _ChatPageState extends State<ChatPage> {
               GestureDetector(
                 onTap: () {
                   openWhatsApp(
-                    '+243975024769',
+                    '+243824745463',
                     'Bonjour, je vous contacte depuis mon application Balar !',
                   );
                 },
