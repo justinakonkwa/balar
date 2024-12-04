@@ -170,13 +170,13 @@ class _HomePageState extends State<HomePage> {
                 ),
                 _buildNextButton(
                   context,
-                  translate("title.title_1"),
+                  translate("title.title_2"),
                   Icons.attach_money,
                   'expenses',
                 ),
                 _buildNextButton(
                   context,
-                  translate("title.title_1"),
+                  translate("title.title_3"),
                   Icons.account_balance,
                   'debts',
                 ),
