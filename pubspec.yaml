@@ -58,6 +58,7 @@ dependencies:
   firebase_storage: ^11.7.7
   flutter_local_notifications: ^18.0.1
   new_version_plus: ^0.0.12
+  rename_app: ^1.6.1
 
 
 dev_dependencies:
@@ -68,9 +69,9 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/logo_android_phone.png"
+  image_path: "assets/logo_android.png"
   adaptive_icon_background: "#FFC107"
-  adaptive_icon_foreground: "assets/logo_android_phone.png"
+  adaptive_icon_foreground: "assets/logo_android.png"
 
 
   # The "flutter_lints" package below contains a set of recommended lints to

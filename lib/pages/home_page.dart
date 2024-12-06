@@ -12,6 +12,7 @@ import 'package:new_version_plus/new_version_plus.dart';
 import 'dart:async';
 
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../theme/theme_provider.dart';
 
@@ -27,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     final newVersion = NewVersionPlus(
       iOSId: 'com.disney.disneyplus',
-      androidId: 'com.exemple.balare',
+      androidId: 'com.disney.disneyplus',
       androidPlayStoreCountry: null,
     );
     advancedStatusCheck(newVersion);
@@ -35,25 +36,56 @@ class _HomePageState extends State<HomePage> {
 
   advancedStatusCheck(NewVersionPlus newVersion) async {
     final status = await newVersion.getVersionStatus();
-    if (status != null) {
-      // debugPrint(status.releaseNotes);
-      // debugPrint(status.appStoreLink);
-      debugPrint(status.localVersion);
-      debugPrint(status.storeVersion);
-      // debugPrint(status.canUpdate.toString());
-      if (status.localVersion != status.storeVersion) {
-        newVersion.showUpdateDialog(
-          context: context,
-          versionStatus: status,
-          updateButtonText: translate("version.title_1"),
-          dismissButtonText: translate("version.title_2"),
-          dialogTitle: translate("version.title_3"),
-          dialogText:
-              "${translate("version.title_4")} ${status.storeVersion} ${translate("version.title_5")} ${status.localVersion}.",
-          launchModeVersion: LaunchModeVersion.external,
-          allowDismissal: true,
-        );
-      }
+    if (status != null && status.localVersion != status.storeVersion) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+            title: AppText(
+              text: "Mise à jour disponible",
+              textAlign: TextAlign.center,
+              color: Theme.of(context).colorScheme.background,
+            ),
+            content: AppText(
+              text:
+                  "Découvrez la version ${status.storeVersion} avec de nombreuses améliorations par rapport à ${status.localVersion}.",
+              textAlign: TextAlign.center,
+              color: Theme.of(context).colorScheme.background,
+            ),
+            actions: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Theme.of(context).highlightColor, // Couleur du bouton
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: AppText(text: "Annuler"),
+              ),
+              ElevatedButton(
+
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Theme.of(context).highlightColor, // Couleur du bouton
+                ),
+                onPressed: () async {
+                  // Rediriger vers le store
+                  final url = Uri.parse(status.appStoreLink);
+                  if (await canLaunchUrl(url)) {
+                    await launchUrl(url);
+                  } else {
+                    debugPrint(
+                        "Impossible d'ouvrir le lien : ${status.appStoreLink}");
+                  }
+                },
+                child: AppText(text: "Mettre à jour"),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
