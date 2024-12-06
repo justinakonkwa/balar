@@ -119,6 +119,13 @@
    "message": {
      "succes_modif": "Modifications enregistrées avec succès",
      "erreur": "Erreur lors du téléchargement"
-   }
+   },
 
+  "version": {
+    "title_1": "Installer",
+    "title_2": "Plus tard",
+    "title_3": "Mise à jour disponible",
+    "title_4": "Découvrez la version",
+    "title_5": "avec de nombreuses améliorations par rapport "
+  }
 }

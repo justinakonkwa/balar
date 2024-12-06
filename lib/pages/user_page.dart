@@ -9,6 +9,7 @@ import 'package:balare/theme/theme_provider.dart';
 import 'package:balare/widget/app_text.dart';
 import 'package:balare/widget/app_text_large.dart';
 import 'package:balare/widget/constantes.dart';
+import 'package:balare/widget/message_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -284,7 +285,15 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Column(
                 children: [
                   myCard(context,
-                      ontap: () {},
+                      ontap: () {
+                        showMessageDialog(context, title: 'Contacts', widget: Column(
+                          children: [
+                            AppText(text: 'benngwanza7@gmail.com'),
+                            AppText(text: '+243824745463'),
+
+                          ],
+                        ), isConfirmation: true, isSale: false);
+                      },
                       icon: CupertinoIcons.phone,
                       title: translate("settings.contactUs"),
                       showLast: false),
@@ -304,7 +313,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     myLaunchUrl(url);
                   },
                       icon: Icons.share_outlined,
-                      title: translate("settings.leaveReview"),
+                      title: translate("settings.shareApp"),
                       showLast: true),
                 ],
               ),
@@ -326,14 +335,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   myCard(context, ontap: () {
                     myLaunchUrl(
-                        'https://raw.githubusercontent.com/SleentOS/compTIA-Acronyms-Terms-And-Conditions/main/README.md');
+                        'https://raw.githubusercontent.com/justinakonkwa/balar_politic/9ecc66d3488f5aa4d5e705042f2a4c5813c2a1c4/politique%20de%20confidentialité');
                   },
                       icon: Icons.privacy_tip_outlined,
                       title: translate("settings.privacy_policy"),
                       showLast: false),
                   myCard(context, ontap: () {
                     myLaunchUrl(
-                        'https://raw.githubusercontent.com/SleentOS/compTIA-Acronyms-Terms-And-Conditions/main/README.md');
+                        'https://raw.githubusercontent.com/justinakonkwa/balar_politic/refs/heads/main/termes%20%26%20conditions');
                   },
                       icon: CupertinoIcons.arrow_3_trianglepath,
                       title: translate("settings.terms_and_conditions"),

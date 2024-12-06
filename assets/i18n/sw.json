@@ -107,5 +107,13 @@
   "message": {
     "succes_modif": "Marekebisho yamehifadhiwa kwa mafanikio",
     "erreur": "Hitilafu wakati wa kupakia"
+  },
+
+  "version": {
+    "title_1": "Sakinisha",
+    "title_2": "Baadaye",
+    "title_3": "Sasisho Linapatikana",
+    "title_4": "Gundua Toleo",
+    "title_5": "lenye maboresho mengi ikilinganishwa na"
   }
 }

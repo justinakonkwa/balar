@@ -8,6 +8,7 @@ import 'package:balare/widget/constantes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'dart:async';
 
 import 'package:provider/provider.dart';
@@ -22,6 +23,40 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  void initState() {
+    super.initState();
+    final newVersion = NewVersionPlus(
+      iOSId: 'com.disney.disneyplus',
+      androidId: 'com.exemple.balare',
+      androidPlayStoreCountry: null,
+    );
+    advancedStatusCheck(newVersion);
+  }
+
+  advancedStatusCheck(NewVersionPlus newVersion) async {
+    final status = await newVersion.getVersionStatus();
+    if (status != null) {
+      // debugPrint(status.releaseNotes);
+      // debugPrint(status.appStoreLink);
+      debugPrint(status.localVersion);
+      debugPrint(status.storeVersion);
+      // debugPrint(status.canUpdate.toString());
+      if (status.localVersion != status.storeVersion) {
+        newVersion.showUpdateDialog(
+          context: context,
+          versionStatus: status,
+          updateButtonText: translate("version.title_1"),
+          dismissButtonText: translate("version.title_2"),
+          dialogTitle: translate("version.title_3"),
+          dialogText:
+              "${translate("version.title_4")} ${status.storeVersion} ${translate("version.title_5")} ${status.localVersion}.",
+          launchModeVersion: LaunchModeVersion.external,
+          allowDismissal: true,
+        );
+      }
+    }
+  }
+
   Stream<List<Map<String, dynamic>>> transactionsByType(
       String userId, String type, DateTime start, DateTime end) {
     return TransactionsService.listenToTransactionsFiltered(
