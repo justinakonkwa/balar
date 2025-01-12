@@ -8,7 +8,7 @@ import 'package:balare/widget/constantes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:new_version_plus/new_version_plus.dart';
+// import 'package:new_version_plus/new_version_plus.dart';
 import 'dart:async';
 
 import 'package:provider/provider.dart';
@@ -24,70 +24,70 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void initState() {
-    super.initState();
-    final newVersion = NewVersionPlus(
-      iOSId: 'com.disney.disneyplus',
-      androidId: 'com.disney.disneyplus',
-      androidPlayStoreCountry: null,
-    );
-    advancedStatusCheck(newVersion);
-  }
+  // void initState() {
+  //   super.initState();
+  //   final newVersion = NewVersionPlus(
+  //     iOSId: 'com.disney.disneyplus',
+  //     androidId: 'com.disney.disneyplus',
+  //     androidPlayStoreCountry: null,
+  //   );
+  //   advancedStatusCheck(newVersion);
+  // }
 
-  advancedStatusCheck(NewVersionPlus newVersion) async {
-    final status = await newVersion.getVersionStatus();
-    if (status != null && status.localVersion != status.storeVersion) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.inverseSurface,
-            title: AppText(
-              text: "Mise à jour disponible",
-              textAlign: TextAlign.center,
-              color: Theme.of(context).colorScheme.background,
-            ),
-            content: AppText(
-              text:
-                  "Découvrez la version ${status.storeVersion} avec de nombreuses améliorations par rapport à ${status.localVersion}.",
-              textAlign: TextAlign.center,
-              color: Theme.of(context).colorScheme.background,
-            ),
-            actions: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      Theme.of(context).highlightColor, // Couleur du bouton
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: AppText(text: "Annuler"),
-              ),
-              ElevatedButton(
-
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      Theme.of(context).highlightColor, // Couleur du bouton
-                ),
-                onPressed: () async {
-                  // Rediriger vers le store
-                  final url = Uri.parse(status.appStoreLink);
-                  if (await canLaunchUrl(url)) {
-                    await launchUrl(url);
-                  } else {
-                    debugPrint(
-                        "Impossible d'ouvrir le lien : ${status.appStoreLink}");
-                  }
-                },
-                child: AppText(text: "Mettre à jour"),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
+  // advancedStatusCheck(NewVersionPlus newVersion) async {
+  //   final status = await newVersion.getVersionStatus();
+  //   if (status != null && status.localVersion != status.storeVersion) {
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+  //           title: AppText(
+  //             text: "Mise à jour disponible",
+  //             textAlign: TextAlign.center,
+  //             color: Theme.of(context).colorScheme.background,
+  //           ),
+  //           content: AppText(
+  //             text:
+  //                 "Découvrez la version ${status.storeVersion} avec de nombreuses améliorations par rapport à ${status.localVersion}.",
+  //             textAlign: TextAlign.center,
+  //             color: Theme.of(context).colorScheme.background,
+  //           ),
+  //           actions: [
+  //             ElevatedButton(
+  //               style: ElevatedButton.styleFrom(
+  //                 backgroundColor:
+  //                     Theme.of(context).highlightColor, // Couleur du bouton
+  //               ),
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: AppText(text: "Annuler"),
+  //             ),
+  //             ElevatedButton(
+  //
+  //               style: ElevatedButton.styleFrom(
+  //                 backgroundColor:
+  //                     Theme.of(context).highlightColor, // Couleur du bouton
+  //               ),
+  //               onPressed: () async {
+  //                 // Rediriger vers le store
+  //                 final url = Uri.parse(status.appStoreLink);
+  //                 if (await canLaunchUrl(url)) {
+  //                   await launchUrl(url);
+  //                 } else {
+  //                   debugPrint(
+  //                       "Impossible d'ouvrir le lien : ${status.appStoreLink}");
+  //                 }
+  //               },
+  //               child: AppText(text: "Mettre à jour"),
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
 
   Stream<List<Map<String, dynamic>>> transactionsByType(
       String userId, String type, DateTime start, DateTime end) {

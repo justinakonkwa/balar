@@ -3,7 +3,7 @@
 import 'dart:io';
 
 import 'package:balare/Modeles/firebase/user_service.dart';
-import 'package:balare/config/utils.dart';
+// import 'package:balare/config/utils.dart';
 import 'package:balare/language/choose_language.dart';
 import 'package:balare/theme/theme_provider.dart';
 import 'package:balare/widget/app_text.dart';
@@ -301,7 +301,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     var url = Platform.isAndroid
                         ? 'https://play.google.com/store/apps/details?id=com.wexende.expensexai'
                         : 'https://apps.apple.com/us/app/money-ai/id6474200248';
-                    myLaunchUrl(url);
+                    // myLaunchUrl(url);
                   },
                       icon: Icons.star_half_outlined,
                       title: translate("settings.leaveReview"),
@@ -310,7 +310,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     var url = Platform.isAndroid
                         ? 'https://play.google.com/store/apps/details?id=com.wexende.expensexai'
                         : 'https://apps.apple.com/us/app/money-ai/id6474200248';
-                    myLaunchUrl(url);
+                    // myLaunchUrl(url);
                   },
                       icon: Icons.share_outlined,
                       title: translate("settings.shareApp"),
@@ -331,24 +331,24 @@ class _SettingsPageState extends State<SettingsPage> {
                   Radius.circular(15),
                 ),
               ),
-              child: Column(
-                children: [
-                  myCard(context, ontap: () {
-                    myLaunchUrl(
-                        'https://raw.githubusercontent.com/justinakonkwa/balar_politic/9ecc66d3488f5aa4d5e705042f2a4c5813c2a1c4/politique%20de%20confidentialité');
-                  },
-                      icon: Icons.privacy_tip_outlined,
-                      title: translate("settings.privacy_policy"),
-                      showLast: false),
-                  myCard(context, ontap: () {
-                    myLaunchUrl(
-                        'https://raw.githubusercontent.com/justinakonkwa/balar_politic/refs/heads/main/termes%20%26%20conditions');
-                  },
-                      icon: CupertinoIcons.arrow_3_trianglepath,
-                      title: translate("settings.terms_and_conditions"),
-                      showLast: true),
-                ],
-              ),
+              // child: Column(
+              //   children: [
+              //     myCard(context, ontap: () {
+              //       myLaunchUrl(
+              //           'https://raw.githubusercontent.com/justinakonkwa/balar_politic/9ecc66d3488f5aa4d5e705042f2a4c5813c2a1c4/politique%20de%20confidentialité');
+              //     },
+              //         icon: Icons.privacy_tip_outlined,
+              //         title: translate("settings.privacy_policy"),
+              //         showLast: false),
+              //     myCard(context, ontap: () {
+              //       myLaunchUrl(
+              //           'https://raw.githubusercontent.com/justinakonkwa/balar_politic/refs/heads/main/termes%20%26%20conditions');
+              //     },
+              //         icon: CupertinoIcons.arrow_3_trianglepath,
+              //         title: translate("settings.terms_and_conditions"),
+              //         showLast: true),
+              //   ],
+              // ),
             ),
             SizedBox(height: 20),
             Container(
